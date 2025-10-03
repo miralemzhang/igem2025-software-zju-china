@@ -1,6 +1,5 @@
-// 批量中英文替换映射
 export const translations = {
-  // 通用词汇
+
   "仿真控制": "Simulation Control",
   "运行仿真": "Run Simulation", 
   "参数拟合": "Parameter Fitting",
@@ -13,7 +12,7 @@ export const translations = {
   "蓝藻(实验)": "Algae (Experimental)",
   "大肠杆菌(实验)": "Bacteria (Experimental)",
   
-  // 参数调节
+
   "蓝藻参数": "Algae Parameters",
   "大肠杆菌参数": "Bacteria Parameters",
   "最大生长速率": "Maximum Growth Rate",
@@ -22,7 +21,7 @@ export const translations = {
   "参数拟合结果": "Parameter Fitting Results",
   "拟合误差": "Fitting Error",
   
-  // 数据分析
+
   "数据分析": "Data Analysis",
   "实验数据分析": "Experimental Data Analysis",
   "统计摘要": "Statistical Summary",
@@ -45,7 +44,7 @@ export const translations = {
   "蓝藻优势": "Algae Dominant",
   "细菌优势": "Bacteria Dominant",
   
-  // 系统方程
+
   "系统方程": "System Equations",
   "参数定义": "Parameter Definitions",
   "参数": "Parameter",
@@ -58,7 +57,7 @@ export const translations = {
   "细菌半饱和常数": "Bacteria Half-Saturation Constant",
   "蔗糖产出系数": "Sucrose Yield Coefficient",
   
-  // GSM模型
+
   "蓝藻代谢网络拓扑": "Algae Metabolic Network Topology",
   "大肠杆菌代谢网络拓扑": "Bacteria Metabolic Network Topology",
   "代谢子系统分布": "Metabolic Subsystem Distribution",

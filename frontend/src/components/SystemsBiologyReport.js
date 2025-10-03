@@ -26,21 +26,18 @@ function SystemsBiologyReport() {
   const modelingResults = {
     dataAnalysis: {
       experimentalGroups: {
-        groupA: "蓝藻单培养 (Synechococcus elongatus)",
-        groupB: "蓝藻-大肠杆菌共培养系统"
+        groupA: "Algae (Synechococcus elongatus)",
+        groupB: "Algae-Bacteria Coculture System"
       },
       keyFindings: [
-        "共培养系统中细菌生长显著优于单培养",
-        "蓝藻在共培养中表现出生长抑制现象",
-        "OD600数据显示明显的相互作用效应",
-        "培养后期共培养系统趋于稳定"
+
       ],
       dataQuality: "良好",
       timePoints: 10,
       replicates: 3
     },
     mathematicalModel: {
-      type: "基于Monod动力学的耦合微分方程组",
+      type: "Monod",
       equations: [
         "dX_algae/dt = μ(S,I) × X_algae - k_d_algae × X_algae",
         "dX_bacteria/dt = μ_bacteria(S) × X_bacteria - k_d_bacteria × X_bacteria", 
@@ -51,7 +48,7 @@ function SystemsBiologyReport() {
         estimated: 12,
         constraints: 5
       },
-      validation: "通过实验数据验证，R² > 0.85"
+      validation: "R² > 0.85"
     },
     gsmIntegration: {
       organisms: [
@@ -66,42 +63,39 @@ function SystemsBiologyReport() {
         shared: 3,
         specific: 8
       },
-      fluxAnalysis: "通量平衡分析 (FBA) 完成"
+      fluxAnalysis: "successful implementation"
     },
     predictions: {
-      growthCurves: "✓ 已实现",
-      sucroseConcentration: "✓ 已实现", 
-      interactionEffects: "✓ 已建模",
-      optimizationTargets: "✓ 已识别"
+      growthCurves: "✓ successful implementation",
+      sucroseConcentration: "✓ successful implementation", 
+      interactionEffects: "✓ successful",
+      optimizationTargets: "✓ successful"
     }
   };
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* 标题 */}
       <Paper elevation={2} sx={{ p: 3, mb: 3, bgcolor: '#f8f9fa' }}>
         <Typography variant="h4" sx={{ fontWeight: 700, color: '#2D3748', mb: 1 }}>
-          系统生物学建模报告
+          Systems Biology Modeling Report
         </Typography>
         <Typography variant="subtitle1" sx={{ color: '#5A5A5A' }}>
-          藻菌共生系统的综合建模与分析结果
+          Comprehensive Modeling and Analysis of Algae-Bacteria Coculture System
         </Typography>
       </Paper>
 
       <Grid container spacing={3}>
-        {/* 项目概览 */}
         <Grid item xs={12}>
           <Card>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Assessment />
-                项目概览
+                Project Overview
               </Typography>
               
               <Alert severity="success" sx={{ mb: 2 }}>
                 <Typography variant="body2">
-                  <strong>建模目标已完成:</strong> 成功构建了藻菌共生系统的数学模型，
-                  实现了生长曲线预测和蔗糖浓度变化预测功能。
+                  Successful implementation of the mathematical model of the algae-bacteria coculture system, including growth curve prediction and sucrose concentration prediction.
                 </Typography>
               </Alert>
 
@@ -109,13 +103,13 @@ function SystemsBiologyReport() {
                 <Grid item xs={12} md={6}>
                   <Box sx={{ p: 2, bgcolor: '#f0f8ff', borderRadius: 1 }}>
                     <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
-                      实验设计
+                      Experimental Design
                     </Typography>
                     <Typography variant="body2" sx={{ mb: 1 }}>
-                      <strong>对照组A:</strong> {modelingResults.dataAnalysis.experimentalGroups.groupA}
+                      <strong>A:</strong> {modelingResults.dataAnalysis.experimentalGroups.groupA}
                     </Typography>
                     <Typography variant="body2">
-                      <strong>实验组B:</strong> {modelingResults.dataAnalysis.experimentalGroups.groupB}
+                      <strong>B:</strong> {modelingResults.dataAnalysis.experimentalGroups.groupB}
                     </Typography>
                   </Box>
                 </Grid>
@@ -123,13 +117,13 @@ function SystemsBiologyReport() {
                 <Grid item xs={12} md={6}>
                   <Box sx={{ p: 2, bgcolor: '#f0fff0', borderRadius: 1 }}>
                     <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
-                      数据质量
+                      Data Quality
                     </Typography>
                     <Typography variant="body2" sx={{ mb: 1 }}>
-                      <strong>时间点:</strong> {modelingResults.dataAnalysis.timePoints} 个
+                      <strong>Time Points:</strong> {modelingResults.dataAnalysis.timePoints} 个
                     </Typography>
                     <Typography variant="body2">
-                      <strong>重复次数:</strong> {modelingResults.dataAnalysis.replicates} 次
+                      <strong>Replicates:</strong> {modelingResults.dataAnalysis.replicates} 次
                     </Typography>
                   </Box>
                 </Grid>
@@ -138,21 +132,20 @@ function SystemsBiologyReport() {
           </Card>
         </Grid>
 
-        {/* 数学建模结果 */}
         <Grid item xs={12} md={6}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Timeline />
-                数学建模
+                Mathematical Modeling
               </Typography>
               
               <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
-                模型类型: {modelingResults.mathematicalModel.type}
+                Model Type: {modelingResults.mathematicalModel.type}
               </Typography>
               
               <Typography variant="body2" sx={{ mb: 2 }}>
-                核心微分方程组:
+                Core Differential Equations:
               </Typography>
               
               <Box sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1, mb: 2, fontFamily: 'monospace' }}>
@@ -169,7 +162,7 @@ function SystemsBiologyReport() {
                     <Typography variant="h6" color="primary">
                       {modelingResults.mathematicalModel.parameters.fitted}
                     </Typography>
-                    <Typography variant="caption">已拟合参数</Typography>
+                    <Typography variant="caption">Fitted Parameters</Typography>
                   </Paper>
                 </Grid>
                 <Grid item xs={4}>
@@ -177,7 +170,7 @@ function SystemsBiologyReport() {
                     <Typography variant="h6" color="secondary">
                       {modelingResults.mathematicalModel.parameters.estimated}
                     </Typography>
-                    <Typography variant="caption">总参数数</Typography>
+                    <Typography variant="caption">Total Parameters</Typography>
                   </Paper>
                 </Grid>
                 <Grid item xs={4}>
@@ -185,7 +178,7 @@ function SystemsBiologyReport() {
                     <Typography variant="h6" color="success.main">
                       {modelingResults.mathematicalModel.parameters.constraints}
                     </Typography>
-                    <Typography variant="caption">约束条件</Typography>
+                    <Typography variant="caption">Constraints</Typography>
                   </Paper>
                 </Grid>
               </Grid>
@@ -199,17 +192,16 @@ function SystemsBiologyReport() {
           </Card>
         </Grid>
 
-        {/* GSM集成结果 */}
         <Grid item xs={12} md={6}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Biotech />
-                基因组规模模型 (GSM)
+                Gene-Scale Model (GSM)
               </Typography>
               
               <Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 600 }}>
-                集成的微生物:
+                Integrated Microorganisms:
               </Typography>
               
               {modelingResults.gsmIntegration.organisms.map((organism, index) => (
@@ -226,18 +218,18 @@ function SystemsBiologyReport() {
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <Typography variant="body2" sx={{ mb: 1 }}>
-                    <strong>蓝藻反应:</strong> {modelingResults.gsmIntegration.reactions.cyanobacteria}
+                    <strong>Algae Reactions:</strong> {modelingResults.gsmIntegration.reactions.cyanobacteria}
                   </Typography>
                   <Typography variant="body2" sx={{ mb: 1 }}>
-                    <strong>细菌反应:</strong> {modelingResults.gsmIntegration.reactions.ecoli}
+                    <strong>Bacteria Reactions:</strong> {modelingResults.gsmIntegration.reactions.ecoli}
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography variant="body2" sx={{ mb: 1 }}>
-                    <strong>共享代谢物:</strong> {modelingResults.gsmIntegration.metabolites.shared}
+                    <strong>Shared Metabolites:</strong> {modelingResults.gsmIntegration.metabolites.shared}
                   </Typography>
                   <Typography variant="body2" sx={{ mb: 1 }}>
-                    <strong>特异代谢物:</strong> {modelingResults.gsmIntegration.metabolites.specific}
+                    <strong>Specific Metabolites:</strong> {modelingResults.gsmIntegration.metabolites.specific}
                   </Typography>
                 </Grid>
               </Grid>
@@ -251,13 +243,12 @@ function SystemsBiologyReport() {
           </Card>
         </Grid>
 
-        {/* 关键发现 */}
         <Grid item xs={12} md={6}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Science />
-                关键发现
+                Key Findings
               </Typography>
               
               <List dense>
@@ -277,12 +268,11 @@ function SystemsBiologyReport() {
           </Card>
         </Grid>
 
-        {/* 预测功能完成状态 */}
         <Grid item xs={12} md={6}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2 }}>
-                预测功能实现状态
+                Prediction Function Implementation Status
               </Typography>
               
               <List dense>
@@ -291,8 +281,8 @@ function SystemsBiologyReport() {
                     <CheckCircle color="success" />
                   </ListItemIcon>
                   <ListItemText 
-                    primary="生长曲线预测"
-                    secondary="蓝藻和大肠杆菌的动态生长模拟"
+                    primary="Growth Curve Prediction"
+                    secondary="Dynamic Growth Simulation of Algae and Bacteria"
                   />
                 </ListItem>
                 
@@ -301,8 +291,8 @@ function SystemsBiologyReport() {
                     <CheckCircle color="success" />
                   </ListItemIcon>
                   <ListItemText 
-                    primary="蔗糖浓度变化预测"
-                    secondary="考虑生产和消耗的动态平衡"
+                    primary="Sucrose Concentration Prediction"
+                    secondary="Dynamic Balance of Production and Consumption"
                   />
                 </ListItem>
                 
@@ -311,8 +301,8 @@ function SystemsBiologyReport() {
                     <CheckCircle color="success" />
                   </ListItemIcon>
                   <ListItemText 
-                    primary="相互作用效应建模"
-                    secondary="藻菌间的竞争与共生关系"
+                    primary="Interaction Effect Modeling"
+                    secondary="Competition and Symbiosis between Algae and Bacteria"
                   />
                 </ListItem>
                 
@@ -321,8 +311,8 @@ function SystemsBiologyReport() {
                     <CheckCircle color="success" />
                   </ListItemIcon>
                   <ListItemText 
-                    primary="参数优化识别"
-                    secondary="关键控制参数的敏感性分析"
+                    primary="Parameter Optimization Identification"
+                    secondary="Sensitivity Analysis of Key Control Parameters"
                   />
                 </ListItem>
               </List>
@@ -330,17 +320,16 @@ function SystemsBiologyReport() {
           </Card>
         </Grid>
 
-        {/* 系统生物学语言表示 */}
         <Grid item xs={12}>
           <Card>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2 }}>
-                系统生物学语言 (SBML) 表示
+                Systems Biology Language (SBML) Representation
               </Typography>
               
               <Alert severity="info" sx={{ mb: 2 }}>
                 <Typography variant="body2">
-                  该模型遵循系统生物学标准，可导出为SBML格式，支持与其他建模工具的互操作性。
+                  This model follows the systems biology standard and can be exported to SBML format, supporting interoperability with other modeling tools.
                 </Typography>
               </Alert>
 
@@ -380,57 +369,56 @@ function SystemsBiologyReport() {
           </Card>
         </Grid>
 
-        {/* 总结与展望 */}
         <Grid item xs={12}>
           <Card>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2 }}>
-                总结与展望
+                Summary and展望
               </Typography>
               
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1, color: 'success.main' }}>
-                    已完成的目标
+                    Completed Goals
                   </Typography>
                   <List dense>
                     <ListItem>
-                      <ListItemText primary="✓ 基于实验数据构建数学模型" />
+                      <ListItemText primary="✓ Based on experimental data to build a mathematical model" />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary="✓ 实现生长曲线和蔗糖浓度预测" />
+                      <ListItemText primary="✓ Implement growth curve and sucrose concentration prediction" />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary="✓ 集成GSM模型框架" />
+                      <ListItemText primary="✓ Integrate GSM model framework" />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary="✓ 系统生物学标准化表示" />
+                      <ListItemText primary="✓ Systems biology standard representation" />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary="✓ 交互式可视化界面" />
+                      <ListItemText primary="✓ Interactive visualization interface" />
                     </ListItem>
                   </List>
                 </Grid>
                 
                 <Grid item xs={12} md={6}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1, color: 'primary.main' }}>
-                    未来发展方向
+                    Future Development Directions
                   </Typography>
                   <List dense>
                     <ListItem>
-                      <ListItemText primary="• 扩展到更多微生物种类" />
+                      <ListItemText primary="• Expand to more microorganisms" />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary="• 集成转录组学数据" />
+                      <ListItemText primary="• Integrate transcriptomic data" />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary="• 优化培养条件预测" />
+                      <ListItemText primary="• Optimize cultivation conditions prediction" />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary="• 工业规模放大建模" />
+                      <ListItemText primary="• Industrial scale modeling" />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary="• 机器学习增强预测" />
+                      <ListItemText primary="• Machine learning enhanced prediction" />
                     </ListItem>
                   </List>
                 </Grid>

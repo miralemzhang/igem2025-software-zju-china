@@ -37,7 +37,6 @@ const SimplePlasticDetectionPanel = () => {
   const [error, setError] = useState(null);
   const [serviceStatus, setServiceStatus] = useState(null);
 
-  // 检查服务状态
   const checkServiceStatus = async () => {
     try {
       const response = await fetch('http://localhost:5001/api/detection/status');
@@ -50,7 +49,6 @@ const SimplePlasticDetectionPanel = () => {
     }
   };
 
-  // 获取视频帧和检测数据
   const fetchFrame = async () => {
     try {
       const response = await fetch('http://localhost:5001/api/detection/frame');
@@ -62,11 +60,9 @@ const SimplePlasticDetectionPanel = () => {
         setError(null);
       }
     } catch (err) {
-      // 静默处理帧获取错误
     }
   };
 
-  // 重置统计信息
   const resetStatistics = async () => {
     try {
       const response = await fetch('http://localhost:5001/api/detection/statistics/reset', {
@@ -82,11 +78,10 @@ const SimplePlasticDetectionPanel = () => {
         });
       }
     } catch (err) {
-      console.error('重置统计失败:', err);
+      console.error(err);
     }
   };
 
-  // 获取塑料类型统计图表数据
   const getPlasticTypesChart = () => {
     const types = Object.entries(statistics.plastic_types || {});
     const total = statistics.total_detections || 1;
@@ -98,7 +93,6 @@ const SimplePlasticDetectionPanel = () => {
     }));
   };
 
-  // 格式化会话时长
   const getSessionDuration = () => {
     if (!statistics.session_start_time) return '00:00:00';
     
@@ -113,7 +107,6 @@ const SimplePlasticDetectionPanel = () => {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // 启动检测
   const startDetection = async () => {
     try {
       setError(null);
@@ -130,17 +123,16 @@ const SimplePlasticDetectionPanel = () => {
       
       if (result.status === 'success') {
         setIsDetecting(true);
-        console.log('🎬 检测已启动');
+        console.log('activated');
       } else {
-        setError(result.message || '启动检测失败');
+        setError(result.message || 'activation failed');
       }
     } catch (err) {
-      setError('无法连接到检测服务，请确保后端服务正在运行');
-      console.error('启动检测错误:', err);
+      setError('cannot connect to detection service, please ensure the backend service is running');
+      console.error(err);
     }
   };
 
-  // 停止检测
   const stopDetection = async () => {
     try {
       const response = await fetch('http://localhost:5001/api/detection/stop', {
@@ -152,28 +144,26 @@ const SimplePlasticDetectionPanel = () => {
       if (result.status === 'success') {
         setIsDetecting(false);
         setCurrentFrame(null);
-        console.log('⏹️ 检测已停止');
+        console.log('deactivated');
       } else {
-        setError(result.message || '停止检测失败');
+        setError(result.message || 'deactivation failed');
       }
     } catch (err) {
-      setError('停止检测失败');
-      console.error('停止检测错误:', err);
+      setError('deactivation failed');
+      console.error(err);
     }
   };
 
-  // 定期检查服务状态
   useEffect(() => {
     checkServiceStatus();
     const statusInterval = setInterval(checkServiceStatus, 5000);
     return () => clearInterval(statusInterval);
   }, []);
 
-  // 定期获取视频帧
   useEffect(() => {
     let frameInterval;
     if (isDetecting) {
-      frameInterval = setInterval(fetchFrame, 200); // 5fps
+      frameInterval = setInterval(fetchFrame, 200);
     }
     return () => {
       if (frameInterval) clearInterval(frameInterval);
@@ -188,9 +178,8 @@ const SimplePlasticDetectionPanel = () => {
       gap: 2,
       overflow: 'hidden',
       p: 2,
-      bgcolor: '#F3F8FC' // 添加一个浅色背景
+      bgcolor: '#F3F8FC'
     }}>
-      {/* 头部控制区域 */}
       <Paper sx={{
         p: 2,
         flexShrink: 0,
@@ -220,7 +209,6 @@ const SimplePlasticDetectionPanel = () => {
                 >
                   LUplaSEE 2.0
                 </Typography>
-                {/* YOLO Logo */}
                 <Box sx={{
                   display: 'flex',
                   alignItems: 'center',
@@ -233,7 +221,7 @@ const SimplePlasticDetectionPanel = () => {
                   border: '1px solid rgba(255,255,255,0.2)'
                 }}>
                   <img
-                    src="/yolo-logo.png" // 请将您的YOLO logo图片放在public文件夹中并命名为yolo-logo.png
+                    src="/yolo-logo.png"
                     alt="YOLO"
                     style={{
                       width: '100%',
@@ -241,7 +229,6 @@ const SimplePlasticDetectionPanel = () => {
                       objectFit: 'contain'
                     }}
                     onError={(e) => {
-                      // 如果图片加载失败，显示文字备选方案
                       e.target.style.display = 'none';
                       e.target.nextSibling.style.display = 'flex';
                     }}
@@ -274,7 +261,6 @@ const SimplePlasticDetectionPanel = () => {
             </Box>
           </Box>
           
-          {/* 服务状态指示器（同一行显示） */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Box sx={{
               width: 8,
@@ -293,14 +279,12 @@ const SimplePlasticDetectionPanel = () => {
           </Box>
         </Box>
 
-        {/* 错误信息 */}
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {error}
           </Alert>
         )}
 
-        {/* 控制按钮 */}
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
           <Button
             variant="contained"
@@ -351,14 +335,12 @@ const SimplePlasticDetectionPanel = () => {
         </Box>
       </Paper>
 
-      {/* 主要内容区域 - 使用固定高度的Grid布局 */}
       <Box sx={{ 
         flex: 1, 
         minHeight: 0,
         display: 'flex',
         gap: 2
       }}>
-        {/* 视频流显示区域 - 固定大小 */}
         <Box sx={{ 
           flex: '1 1 60%',
           minWidth: '400px',
@@ -386,8 +368,7 @@ const SimplePlasticDetectionPanel = () => {
                 />
               )}
             </Box>
-            
-            {/* 固定大小的视频容器 */}
+              
             <Box sx={{
               flex: 1,
               bgcolor: '#000000',
@@ -440,7 +421,6 @@ const SimplePlasticDetectionPanel = () => {
           </Paper>
         </Box>
 
-        {/* 统计信息和检测结果 - 确保始终可见 */}
         <Box sx={{ 
           flex: '1 1 40%',
           minWidth: '350px',
@@ -450,7 +430,6 @@ const SimplePlasticDetectionPanel = () => {
           gap: 2,
           height: '100%'
         }}>
-          {/* 统计信息卡片 - 固定高度 */}
           <Paper sx={{
             p: 2,
             height: '280px', // 固定高度
@@ -496,7 +475,6 @@ const SimplePlasticDetectionPanel = () => {
               Session Duration: {getSessionDuration()}
             </Typography>
             
-            {/* 塑料类型分布 - 可滚动区域 */}
             <Typography variant="subtitle2" sx={{ color: '#059669', mb: 1 }}>
               Detection Type Distribution:
             </Typography>
@@ -541,7 +519,6 @@ const SimplePlasticDetectionPanel = () => {
             </Box>
           </Paper>
 
-          {/* 最近检测结果 - 剩余空间 */}
           <Paper sx={{
             flex: 1,
             minHeight: '200px',

@@ -44,10 +44,8 @@ import {
   ComposedChart
 } from 'recharts';
 
-// GSM模型类
 class GSMModel {
   constructor() {
-    // 蓝藻代谢网络（简化版）
     this.algaeNetwork = {
       metabolites: {
         'co2': { name: 'CO2', compartment: 'extracellular' },
@@ -80,7 +78,6 @@ class GSMModel {
       }
     };
 
-    // 大肠杆菌代谢网络（简化版）
     this.bacteriaNetwork = {
       metabolites: {
         'sucrose': { name: 'Sucrose', compartment: 'extracellular' },
@@ -117,7 +114,6 @@ class GSMModel {
       }
     };
 
-    // 共培养交互
     this.interactions = {
       'SUCROSE_TRANSFER': {
         name: 'Sucrose Transfer',
@@ -127,23 +123,19 @@ class GSMModel {
     };
   }
 
-  // 通量平衡分析（FBA）
   performFBA(organism = 'algae') {
     const network = organism === 'algae' ? this.algaeNetwork : this.bacteriaNetwork;
     const fluxes = {};
     
-    // 简化的FBA计算（实际应用需要线性规划求解器）
     Object.keys(network.reactions).forEach(reactionId => {
       const reaction = network.reactions[reactionId];
-      // 模拟通量值（实际中需要优化求解）
       const maxFlux = reaction.bounds[1];
-      fluxes[reactionId] = Math.random() * maxFlux * 0.7; // 模拟70%的最大通量
+      fluxes[reactionId] = Math.random() * maxFlux * 0.7;
     });
 
     return fluxes;
   }
 
-  // 代谢网络分析
   analyzeNetwork(organism = 'algae') {
     const network = organism === 'algae' ? this.algaeNetwork : this.bacteriaNetwork;
     
@@ -156,7 +148,6 @@ class GSMModel {
   }
 
   calculateConnectivity(network) {
-    // 计算网络连通性（简化版）
     const metabolites = Object.keys(network.metabolites);
     const reactions = Object.keys(network.reactions);
     
@@ -166,7 +157,6 @@ class GSMModel {
     };
   }
 
-  // 共培养系统分析
   analyzeCoCulture() {
     const algaeFluxes = this.performFBA('algae');
     const bacteriaFluxes = this.performFBA('bacteria');
@@ -197,12 +187,10 @@ const GSMModelingComponent = () => {
   const [coCultureAnalysis, setCoCultureAnalysis] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
 
-  // 自动运行GSM分析
   useEffect(() => {
     const runGSMAnalysis = async () => {
       setIsRunning(true);
       
-      // 模拟计算时间
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const algaeAnalysis = gsmModel.analyzeNetwork('algae');
@@ -222,7 +210,6 @@ const GSMModelingComponent = () => {
     runGSMAnalysis();
   }, [gsmModel]);
 
-  // 格式化通量数据用于图表显示
   const formatFluxData = (fluxes) => {
     if (!fluxes) return [];
     
@@ -232,53 +219,43 @@ const GSMModelingComponent = () => {
     }));
   };
 
-  // 生成符合SBGN标准的网络拓扑数据
   const generateNetworkTopology = (organism = 'algae') => {
     const nodes = [];
     const edges = [];
     
     if (organism === 'algae') {
-      // 蓝藻(Synechococcus elongatus)代谢网络 - 防遮挡分散布局
       const algaeNodes = [
-        // 外部环境 - 左侧 (垂直分散)
         { id: 'co2_ext', name: 'CO₂', type: 'species', x: 60, y: 140, compartment: 'external', shape: 'circle' },
         { id: 'h2o_ext', name: 'H₂O', type: 'species', x: 60, y: 200, compartment: 'external', shape: 'circle' },
         { id: 'light', name: 'Light', type: 'species', x: 60, y: 100, compartment: 'external', shape: 'circle' },
         
-        // 外部环境 - 右侧 (垂直分散)
         { id: 'o2_ext', name: 'O₂', type: 'species', x: 560, y: 100, compartment: 'external', shape: 'circle' },
         { id: 'sucrose_ext', name: 'Sucrose', type: 'species', x: 560, y: 260, compartment: 'external', shape: 'circle' },
         
-        // 细胞内代谢物 (分层布局)
         { id: 'co2_in', name: 'CO₂', type: 'species', x: 180, y: 140, compartment: 'cytoplasm', shape: 'circle' },
         { id: 'glucose', name: 'Glucose', type: 'species', x: 320, y: 160, compartment: 'cytoplasm', shape: 'circle' },
         { id: 'sucrose_in', name: 'Sucrose', type: 'species', x: 440, y: 240, compartment: 'cytoplasm', shape: 'circle' },
         
-        // 反应节点 (避免与代谢物重叠)
         { id: 'photosynthesis', name: 'Photosynthesis', type: 'process', x: 250, y: 110, shape: 'square' },
         { id: 'sucrose_synthesis', name: 'Sucrose\nSynthesis', type: 'process', x: 380, y: 200, shape: 'square' },
         { id: 'sucrose_transport', name: 'Export', type: 'process', x: 500, y: 250, shape: 'square' },
         { id: 'growth_algae', name: 'Growth', type: 'process', x: 320, y: 280, shape: 'square' },
         
-        // 生物量 (底部中心)
         { id: 'biomass_algae', name: 'μ_cyano', type: 'species', x: 320, y: 340, compartment: 'cytoplasm', shape: 'hexagon' }
       ];
       
       const algaeEdges = [
-        // 光合作用
         { from: 'co2_ext', to: 'photosynthesis', type: 'consumption', stoichiometry: 6 },
         { from: 'h2o_ext', to: 'photosynthesis', type: 'consumption', stoichiometry: 6 },
         { from: 'light', to: 'photosynthesis', type: 'modulation', stoichiometry: 1 },
         { from: 'photosynthesis', to: 'glucose', type: 'production', stoichiometry: 1 },
         { from: 'photosynthesis', to: 'o2_ext', type: 'production', stoichiometry: 6 },
         
-        // 蔗糖合成和转运
         { from: 'glucose', to: 'sucrose_synthesis', type: 'consumption', stoichiometry: 2 },
         { from: 'sucrose_synthesis', to: 'sucrose_in', type: 'production', stoichiometry: 1 },
         { from: 'sucrose_in', to: 'sucrose_transport', type: 'consumption', stoichiometry: 1 },
         { from: 'sucrose_transport', to: 'sucrose_ext', type: 'production', stoichiometry: 1 },
         
-        // 生长
         { from: 'glucose', to: 'growth_algae', type: 'consumption', stoichiometry: 1 },
         { from: 'growth_algae', to: 'biomass_algae', type: 'production', stoichiometry: 1 }
       ];
@@ -287,34 +264,27 @@ const GSMModelingComponent = () => {
       edges.push(...algaeEdges);
       
     } else {
-      // 细菌(Saccharomyces cerevisiae/E.coli)代谢网络 - 防遮挡分散布局
       const bacteriaNodes = [
-        // 外部代谢物 - 左侧
         { id: 'sucrose_ext', name: 'Sucrose', type: 'species', x: 60, y: 180, compartment: 'external', shape: 'circle' },
         
-        // 外部代谢物 - 右侧 (分散布局)
         { id: 'acetate_ext', name: 'Acetate', type: 'species', x: 560, y: 140, compartment: 'external', shape: 'circle' },
         { id: 'ethanol_ext', name: 'Ethanol', type: 'species', x: 560, y: 220, compartment: 'external', shape: 'circle' },
         
-        // 细胞内代谢物 (分层水平布局)
         { id: 'sucrose_in', name: 'Sucrose', type: 'species', x: 180, y: 180, compartment: 'cytoplasm', shape: 'circle' },
         { id: 'glucose', name: 'Glucose', type: 'species', x: 280, y: 180, compartment: 'cytoplasm', shape: 'circle' },
         { id: 'pyruvate', name: 'Pyruvate', type: 'species', x: 380, y: 180, compartment: 'cytoplasm', shape: 'circle' },
         { id: 'acetyl_coa', name: 'Acetyl-CoA', type: 'species', x: 350, y: 120, compartment: 'cytoplasm', shape: 'circle' },
         
-        // 反应节点 (避开代谢物)
         { id: 'sucrose_uptake', name: 'Uptake', type: 'process', x: 130, y: 180, shape: 'square' },
         { id: 'glycolysis', name: 'Glycolysis', type: 'process', x: 230, y: 180, shape: 'square' },
         { id: 'pyruvate_decarb', name: 'Decarb', type: 'process', x: 365, y: 150, shape: 'square' },
         { id: 'fermentation', name: 'Fermentation', type: 'process', x: 470, y: 180, shape: 'square' },
         { id: 'growth_bacteria', name: 'Growth', type: 'process', x: 350, y: 260, shape: 'square' },
         
-        // 生物量 (底部中心)
         { id: 'biomass_bacteria', name: 'μ_yeast', type: 'species', x: 350, y: 320, compartment: 'cytoplasm', shape: 'hexagon' }
       ];
       
       const bacteriaEdges = [
-        // 蔗糖摄取和糖酵解
         { from: 'sucrose_ext', to: 'sucrose_uptake', type: 'consumption', stoichiometry: 1 },
         { from: 'sucrose_uptake', to: 'sucrose_in', type: 'production', stoichiometry: 1 },
         { from: 'sucrose_in', to: 'glycolysis', type: 'consumption', stoichiometry: 1 },
@@ -322,14 +292,12 @@ const GSMModelingComponent = () => {
         { from: 'glucose', to: 'glycolysis', type: 'consumption', stoichiometry: 1 },
         { from: 'glycolysis', to: 'pyruvate', type: 'production', stoichiometry: 2 },
         
-        // 丙酮酸代谢
         { from: 'pyruvate', to: 'pyruvate_decarb', type: 'consumption', stoichiometry: 1 },
         { from: 'pyruvate_decarb', to: 'acetyl_coa', type: 'production', stoichiometry: 1 },
         { from: 'pyruvate', to: 'fermentation', type: 'consumption', stoichiometry: 1 },
         { from: 'fermentation', to: 'acetate_ext', type: 'production', stoichiometry: 1 },
         { from: 'fermentation', to: 'ethanol_ext', type: 'production', stoichiometry: 1 },
         
-        // 生长
         { from: 'acetyl_coa', to: 'growth_bacteria', type: 'consumption', stoichiometry: 1 },
         { from: 'growth_bacteria', to: 'biomass_bacteria', type: 'production', stoichiometry: 1 }
       ];
@@ -341,7 +309,6 @@ const GSMModelingComponent = () => {
     return { nodes, edges };
   };
 
-  // 生成子系统分析数据
   const generateSubsystemData = () => {
     if (!networkAnalysis) return [];
     
@@ -365,24 +332,21 @@ const GSMModelingComponent = () => {
     }));
   };
 
-  // 渲染符合SBGN标准的网络拓扑图
   const renderNetworkTopology = (organism = 'algae') => {
     const { nodes, edges } = generateNetworkTopology(organism);
     
-    // SBGN标准颜色方案
     const colors = {
-      species_external: '#e3f2fd',      // 外部代谢物 - 浅蓝色
-      species_cytoplasm: '#f3e5f5',     // 细胞质代谢物 - 浅紫色
-      process: '#fff3e0',               // 反应过程 - 浅橙色
-      biomass: '#e8f5e8',               // 生物量 - 浅绿色
-      consumption: '#4caf50',           // 消耗边 - 绿色
-      production: '#ff9800',            // 产生边 - 橙色
-      modulation: '#f44336'             // 调节边 - 红色
+      species_external: '#e3f2fd',
+      species_cytoplasm: '#f3e5f5',
+      process: '#fff3e0',
+      biomass: '#e8f5e8',
+      consumption: '#4caf50',
+      production: '#ff9800',
+      modulation: '#f44336'
     };
 
     return (
       <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-        {/* SVG容器 - SBGN标准绘制 */}
         <svg
           style={{
             position: 'absolute',
@@ -394,9 +358,7 @@ const GSMModelingComponent = () => {
           }}
           viewBox="0 0 600 450"
         >
-          {/* 定义SBGN标准箭头 */}
           <defs>
-            {/* 消耗箭头 */}
             <marker
               id={`consumption-arrow-${organism}`}
               markerWidth="8"
@@ -412,7 +374,6 @@ const GSMModelingComponent = () => {
               />
             </marker>
             
-            {/* 产生箭头 */}
             <marker
               id={`production-arrow-${organism}`}
               markerWidth="8"
@@ -428,7 +389,6 @@ const GSMModelingComponent = () => {
               />
             </marker>
             
-            {/* 调节箭头 */}
             <marker
               id={`modulation-arrow-${organism}`}
               markerWidth="8"
@@ -444,14 +404,12 @@ const GSMModelingComponent = () => {
               />
             </marker>
             
-            {/* 细胞区室边界 */}
             <pattern id={`cell-boundary-${organism}`} patternUnits="userSpaceOnUse" width="4" height="4">
               <rect width="4" height="4" fill="none" stroke="#90a4ae" strokeWidth="0.5"/>
               <path d="M0,4 L4,0" stroke="#90a4ae" strokeWidth="0.5"/>
             </pattern>
           </defs>
           
-          {/* 细胞边界 */}
           <rect
             x="120"
             y="70"
@@ -467,7 +425,6 @@ const GSMModelingComponent = () => {
             {organism === 'algae' ? 'Synechococcus elongatus' : 'Saccharomyces cerevisiae'}
           </text>
           
-          {/* 绘制边 */}
           {edges.map((edge, index) => {
             const fromNode = nodes.find(n => n.id === edge.from);
             const toNode = nodes.find(n => n.id === edge.to);
@@ -494,20 +451,16 @@ const GSMModelingComponent = () => {
                   markerEnd={markerEnd}
                   opacity={0.8}
                 />
-                {/* 化学计量数标签 - 智能定位 */}
                 {edge.stoichiometry > 1 && (
                   <g>
                     {(() => {
-                      // 计算标签位置，避免与节点重叠
                       const midX = (fromNode.x + toNode.x) / 2;
                       const midY = (fromNode.y + toNode.y) / 2;
                       
-                      // 根据边的方向调整偏移
                       const dx = toNode.x - fromNode.x;
                       const dy = toNode.y - fromNode.y;
                       const length = Math.sqrt(dx * dx + dy * dy);
                       
-                      // 垂直于边的方向偏移
                       const offsetX = (-dy / length) * 12;
                       const offsetY = (dx / length) * 12;
                       
@@ -544,17 +497,14 @@ const GSMModelingComponent = () => {
             );
           })}
           
-          {/* 绘制节点 */}
           {nodes.map((node, index) => {
             let fillColor, strokeColor, shape;
             
-            // 根据SBGN标准设置颜色和形状
             if (node.type === 'species') {
               fillColor = node.compartment === 'external' ? colors.species_external : colors.species_cytoplasm;
               strokeColor = node.compartment === 'external' ? '#1976d2' : '#7b1fa2';
               
               if (node.shape === 'hexagon') {
-                // 生物量 - 六边形
                 const size = 18;
                 const points = Array.from({length: 6}, (_, i) => {
                   const angle = (i * Math.PI) / 3;
@@ -573,7 +523,6 @@ const GSMModelingComponent = () => {
                   />
                 );
               } else {
-                // 普通代谢物 - 圆形
                 shape = (
                   <circle
                     key={`node-${index}`}
@@ -587,7 +536,6 @@ const GSMModelingComponent = () => {
                 );
               }
             } else if (node.type === 'process') {
-              // 反应过程 - 正方形
               shape = (
                 <rect
                   key={`node-${index}`}
@@ -603,28 +551,24 @@ const GSMModelingComponent = () => {
               );
             }
             
-            // 处理多行文本 - 动态调整位置避免重叠
             const textLines = node.name.split('\n');
             let textY, textX = node.x;
             
-            // 根据节点类型和位置动态调整文字位置
             if (node.type === 'species' && node.shape === 'hexagon') {
-              textY = node.y + 40; // 生物量标签距离更远
+              textY = node.y + 40;
             } else if (node.type === 'species') {
-              // 代谢物标签 - 根据位置调整
               if (node.compartment === 'external') {
-                // 外部代谢物 - 标签放在远离细胞的一侧
                 if (node.x < 300) {
-                  textX = node.x - 25; // 左侧外部，标签向左
+                  textX = node.x - 25;
                 } else {
-                  textX = node.x + 25; // 右侧外部，标签向右
+                  textX = node.x + 25;
                 }
-                textY = node.y + 5; // 水平对齐
+                textY = node.y + 5;
               } else {
-                textY = node.y + 32; // 内部代谢物标签向下
+                textY = node.y + 32;
               }
             } else {
-              textY = node.y + 30; // 反应节点标签
+              textY = node.y + 30;
             }
             
             return (
@@ -651,7 +595,6 @@ const GSMModelingComponent = () => {
           })}
         </svg>
         
-        {/* SBGN图例 - 顶部位置避免遮挡 */}
         <Box sx={{ 
           position: 'absolute', 
           top: 10, 
@@ -690,7 +633,6 @@ const GSMModelingComponent = () => {
 
   return (
     <Box>
-      {/* GSM模型概述 */}
       <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#1a202c' }}>
           Genome-Scale Metabolic Model (GSM) Analysis
@@ -722,7 +664,6 @@ const GSMModelingComponent = () => {
         </Box>
       </Paper>
 
-      {/* 主要内容区域 - 左右分栏布局 */}
       {networkAnalysis && (
         <Box sx={{ 
           display: 'grid', 
@@ -730,9 +671,7 @@ const GSMModelingComponent = () => {
           gap: 3,
           mb: 3
         }}>
-          {/* 左侧：网络统计和拓扑 */}
           <Box>
-            {/* 网络统计 */}
             <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#1a202c' }}>
                 Network Statistics
@@ -787,7 +726,6 @@ const GSMModelingComponent = () => {
               </Box>
             </Paper>
 
-            {/* 子系统分析 */}
             <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#1a202c' }}>
                 Metabolic Subsystem Distribution
@@ -819,9 +757,7 @@ const GSMModelingComponent = () => {
             </Paper>
           </Box>
 
-          {/* 右侧：网络拓扑可视化 */}
           <Box>
-            {/* 蓝藻网络拓扑 */}
             <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#2e7d32' }}>
                 Algae Metabolic Network Topology
@@ -834,7 +770,6 @@ const GSMModelingComponent = () => {
               </Box>
             </Paper>
 
-            {/* 细菌网络拓扑 */}
             <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#1976d2' }}>
                 Bacteria Metabolic Network Topology
@@ -850,9 +785,6 @@ const GSMModelingComponent = () => {
         </Box>
       )}
 
-     
-     
-      {/* 通量分析结果 - 优化布局 */}
       {fluxResults && (
         <Box sx={{ 
           display: 'grid', 
@@ -936,7 +868,6 @@ const GSMModelingComponent = () => {
         </Box>
       )}
 
-      {/* 交互作用分析 */}
       {coCultureAnalysis && (
         <Paper elevation={1} sx={{ p: 3, mt: 3, borderRadius: 2 }}>
           <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#1a202c' }}>

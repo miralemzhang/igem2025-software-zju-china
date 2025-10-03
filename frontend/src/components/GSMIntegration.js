@@ -20,13 +20,11 @@ import {
   Alert,
   LinearProgress,
 } from '@mui/material';
-// Note: NetworkChart and Sankey are not available in recharts, removed unused imports
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import Biotech from '@mui/icons-material/Biotech';
 import TimelineIcon from '@mui/icons-material/Timeline';
 
-// GSM模型数据结构
 const GSM_DATA = {
   cyanobacteria: {
     name: 'Synechococcus elongatus',
@@ -77,7 +75,6 @@ const GSM_DATA = {
   }
 };
 
-// Flux Balance Analysis 简化实现
 class FluxBalanceAnalysis {
   constructor() {
     this.stoichiometricMatrix = this.buildStoichiometricMatrix();
@@ -85,7 +82,6 @@ class FluxBalanceAnalysis {
   }
 
   buildStoichiometricMatrix() {
-    // 简化的化学计量矩阵
     return {
       metabolites: ['CO2', 'H2O', 'Glc', 'Sucrose', 'O2', 'ATP', 'Biomass'],
       reactions: ['PHOT', 'SUCR_SYN', 'RESP', 'SUCR_UPT', 'GLYC', 'GROWTH'],
@@ -102,15 +98,12 @@ class FluxBalanceAnalysis {
   }
 
   buildObjectiveFunction() {
-    // 最大化生物量生产
     return [0, 0, 0, 0, 0, 1]; // 对应GROWTH反应
   }
 
   solveFBA(constraints = {}) {
-    // 简化的线性规划求解
     const defaultFluxes = [0.85, 0.42, 0.15, 0.35, 0.30, 0.28];
     
-    // 应用约束
     const constrainedFluxes = defaultFluxes.map((flux, i) => {
       const reactionId = this.stoichiometricMatrix.reactions[i];
       return constraints[reactionId] !== undefined ? constraints[reactionId] : flux;
@@ -128,7 +121,6 @@ class FluxBalanceAnalysis {
     const variability = {};
 
     reactions.forEach(reaction => {
-      // 计算每个反应的最小和最大通量
       const baseResult = this.solveFBA();
       const minResult = this.solveFBA({ [reaction]: 0 });
       const maxResult = this.solveFBA({ [reaction]: baseResult.fluxes[reactions.indexOf(reaction)] * 1.5 });
@@ -158,7 +150,6 @@ function GSMIntegration() {
   const runFBA = async () => {
     setIsAnalyzing(true);
     
-    // 模拟异步计算
     setTimeout(() => {
       const results = fba.solveFBA();
       const variability = fba.performFluxVariabilityAnalysis();
@@ -171,7 +162,6 @@ function GSMIntegration() {
 
   const getCurrentData = () => GSM_DATA[selectedOrganism];
 
-  // 准备代谢网络可视化数据
   const getNetworkData = () => {
     const data = getCurrentData();
     return {
@@ -207,7 +197,6 @@ function GSMIntegration() {
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* 标题区域 */}
       <Paper elevation={2} sx={{ p: 3, mb: 3, bgcolor: '#f0f8ff' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
           <AccountTreeIcon sx={{ fontSize: 40, color: '#4169E1' }} />
@@ -257,7 +246,6 @@ function GSMIntegration() {
       </Paper>
 
       <Grid container spacing={3}>
-        {/* 代谢反应表 */}
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
@@ -308,7 +296,6 @@ function GSMIntegration() {
           </Card>
         </Grid>
 
-        {/* 代谢物浓度 */}
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
@@ -355,7 +342,6 @@ function GSMIntegration() {
           </Card>
         </Grid>
 
-        {/* FBA结果 */}
         {fluxResults && (
           <Grid item xs={12}>
             <Card>
@@ -442,7 +428,6 @@ function GSMIntegration() {
           </Grid>
         )}
 
-        {/* 基因表达数据 */}
         <Grid item xs={12}>
           <Card>
             <CardContent>

@@ -18,9 +18,9 @@ import SimplePlasticDetectionPanel from './components/SimplePlasticDetectionPane
 function UserModePage() {
   const navigate = useNavigate();
   const [chatOpen, setChatOpen] = useState(false);
-  const [selectedModel, setSelectedModel] = useState('ocean'); // 模型选择状态
-  const [viewMode, setViewMode] = useState('monitor'); // 新增：视图模式状态 (monitor/console)
-  const [pathPlanningOpen, setPathPlanningOpen] = useState(false); // 路径规划弹窗状态
+  const [selectedModel, setSelectedModel] = useState('ocean');
+  const [viewMode, setViewMode] = useState('monitor');
+  const [pathPlanningOpen, setPathPlanningOpen] = useState(false);
   const [submarineData, setSubmarineData] = useState({
     lat: 30.6762,
     lng: 124.6503,
@@ -31,7 +31,6 @@ function UserModePage() {
     transmissionSpeed: 2.46
   });
   
-  // 巡航路径数据 - 优化间距和分布
   const cruisePath = [
     { lat: 30.6762, lng: 124.6503 },
     { lat: 30.7200, lng: 124.7800 },
@@ -51,14 +50,12 @@ function UserModePage() {
   const [typing, setTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // 滚动到底部
   useEffect(() => {
     if (chatOpen && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, chatOpen]);
 
-  // 模拟潜艇数据更新
   useEffect(() => {
     const interval = setInterval(() => {
       setSubmarineData(prev => ({
@@ -90,9 +87,7 @@ function UserModePage() {
       });
       const data = await res.json();
       
-      // 检查是否是图像响应
       if (typeof data.reply === 'object' && data.reply.type === 'image') {
-        // 处理图像响应
         const agentMsg = {
           role: 'agent',
           text: data.reply.message,
@@ -104,7 +99,6 @@ function UserModePage() {
         setLoading(false);
         setTyping(false);
       } else {
-        // 处理文本响应 - 逐字显示
         let idx = 0;
         setTyping(true);
         let currentText = '';
@@ -133,10 +127,8 @@ function UserModePage() {
     }
   };
 
-  // 渲染控制台界面
   const renderConsole = () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '660px', width: '100%' }}>
-      {/* 世界地图区域 */}
       <Paper sx={{
         flex: 1,
         mb: 2,
@@ -194,7 +186,6 @@ function UserModePage() {
           </Button>
         </Box>
         
-        {/* 模拟世界地图 */}
         <Box sx={{
           width: '100%',
           height: '340px',
@@ -249,7 +240,6 @@ function UserModePage() {
             zIndex: 1
           }
         }}>
-          {/* 卫星坐标网格线 */}
           <Box sx={{
             position: 'absolute',
             top: 0,
@@ -266,7 +256,6 @@ function UserModePage() {
             zIndex: 2
           }} />
           
-          {/* 大陆轮廓 (简化单色) */}
           <Box sx={{
             position: 'absolute',
             top: '20%',
@@ -292,7 +281,6 @@ function UserModePage() {
           
 
           
-          {/* 两兄弟岛地名标识 */}
           <Box sx={{
             position: 'absolute',
             top: '51%',
@@ -331,7 +319,6 @@ function UserModePage() {
             </Typography>
           </Box>
           
-          {/* 东中国海海域标识 */}
           <Box sx={{
             position: 'absolute',
             top: '25%',
@@ -371,7 +358,6 @@ function UserModePage() {
           
          
 
-          {/* 卫星云层效果 */}
           <Box sx={{
             position: 'absolute',
             top: '10%',
@@ -402,7 +388,6 @@ function UserModePage() {
 
           
           
-          {/* 潜艇位置红点 */}
           <Box sx={{
             position: 'absolute',
             top: `${((submarineData.lat - 20) / 40) * 100}%`,
@@ -417,7 +402,6 @@ function UserModePage() {
             border: '2px solid #ffffff'
           }} />
           
-          {/* 信号圈 */}
           <Box sx={{
             position: 'absolute',
             top: `${((submarineData.lat - 20) / 40) * 100 -2}%`,
@@ -429,7 +413,6 @@ function UserModePage() {
             animation: 'signal-ripple 3s infinite'
           }} />
           
-          {/* 导航器风格坐标显示框 */}
           <Box sx={{
             position: 'absolute',
             top: 15,
@@ -505,7 +488,6 @@ function UserModePage() {
 
       </Paper>
 
-      {/* 参数显示区域 */}
       <Paper sx={{
         height: '220px',
         p: 2,
@@ -541,7 +523,6 @@ function UserModePage() {
         </Box>
         
         <Grid container spacing={2} justifyContent="center" alignItems="stretch">
-          {/* 位置信息 */}
           <Grid item xs={6}>
             <Box sx={{ 
               p: 2, 
@@ -586,7 +567,6 @@ function UserModePage() {
             </Box>
           </Grid>
           
-          {/* 信号状态 */}
           <Grid item xs={6}>
             <Box sx={{ 
               p: 2, 
@@ -637,7 +617,6 @@ function UserModePage() {
             </Box>
           </Grid>
           
-          {/* 电量状态 */}
           <Grid item xs={6}>
             <Box sx={{ 
               p: 2, 
@@ -688,7 +667,6 @@ function UserModePage() {
             </Box>
           </Grid>
           
-          {/* 速度状态 */}
           <Grid item xs={6}>
             <Box sx={{ 
               p: 2, 
@@ -749,7 +727,6 @@ function UserModePage() {
         zIndex: 0,
       }}
     >
-      {/* 顶部导航栏 */}
       <Box sx={{
         bgcolor: '#C6F2ED',
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -767,7 +744,6 @@ function UserModePage() {
           justifyContent: 'space-between',
           alignItems: 'center'
         }}>
-          {/* Logo区域 */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="h4" sx={{ 
               fontWeight: 800, 
@@ -782,7 +758,6 @@ function UserModePage() {
             </Typography>
           </Box>
           
-          {/* 导航菜单 */}
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <Button 
               onClick={() => setChatOpen(true)}
@@ -831,7 +806,6 @@ function UserModePage() {
         </Box>
       </Box>
       
-      {/* 主要内容区域 */}
       <Box sx={{ 
         flex: 1,
         display: 'flex',
@@ -843,9 +817,7 @@ function UserModePage() {
       }}>
 
         
-        {/* 主要复合组件容器 */}
         <Box sx={{ width: '90%', position: 'relative', display: 'flex', alignItems: 'stretch', gap: 2 }}>
-          {/* 左侧模型选择器 (仅在监测台模式显示) */}
           {viewMode === 'monitor' && (
             <Box
               sx={{
@@ -861,7 +833,6 @@ function UserModePage() {
                 border: '1px solid #C6F2ED'
               }}
             >
-              {/* 海洋环流模型选项卡 */}
               <Button
                 onClick={() => setSelectedModel('ocean')}
                 sx={{
@@ -932,7 +903,6 @@ function UserModePage() {
               </Typography>
               </Button>
 
-              {/* 污染物扩散模型选项卡 */}
               <Button
                 onClick={() => setSelectedModel('pollution')}
                 sx={{
@@ -1003,7 +973,6 @@ function UserModePage() {
               </Typography>
               </Button>
 
-              {/* 塑料检测模型选项卡 */}
               <Button
                 onClick={() => {
                   setSelectedModel('detection');
@@ -1074,7 +1043,6 @@ function UserModePage() {
                   }}>
                     塑料识别系统
                   </Typography>
-                  {/* YOLO Logo */}
                   <Box sx={{
                     display: 'flex',
                     alignItems: 'center',
@@ -1087,7 +1055,7 @@ function UserModePage() {
                     border: '1px solid rgba(255,255,255,0.2)'
                   }}>
                     <img
-                      src="/yolo-logo.png" // 请将您的YOLO logo图片放在public文件夹中并命名为yolo-logo.png
+                      src="/yolo-logo.png"
                       alt="YOLO"
                       style={{
                         width: '100%',
@@ -1095,7 +1063,6 @@ function UserModePage() {
                         objectFit: 'contain'
                       }}
                       onError={(e) => {
-                        // 如果图片加载失败，显示文字备选方案
                         e.target.style.display = 'none';
                         e.target.nextSibling.style.display = 'flex';
                       }}
@@ -1121,7 +1088,6 @@ function UserModePage() {
             </Box>
           )}
 
-          {/* 中间展示区域 */}
           <Paper 
             elevation={0} 
             sx={{ 
@@ -1153,14 +1119,12 @@ function UserModePage() {
                   title={selectedModel === 'ocean' ? 'Ocean Current Model' : selectedModel === 'pollution' ? 'Pollutant Diffusion Model' : 'Plastic Detection Model'}
                 />
                 
-                {/* 塑料检测模型内容 */}
                 {selectedModel === 'detection' && (
                   <Box sx={{ width: '100%', height: '660px', p: 0 }}>
                     <SimplePlasticDetectionPanel />
                   </Box>
                 )}
                 
-                {/* 模型标题指示器 */}
                 {selectedModel !== 'detection' && (
                   <Box
                     sx={{
@@ -1214,7 +1178,6 @@ function UserModePage() {
             ) : null}
           </Paper>
 
-          {/* 右侧视图模式选择器 */}
           <Box
             sx={{
               display: 'flex',
@@ -1229,7 +1192,6 @@ function UserModePage() {
               border: '1px solid #CEB1E1'
             }}
           >
-            {/* 监测台选项卡 */}
             <Button
               onClick={() => setViewMode('monitor')}
               sx={{
@@ -1285,7 +1247,6 @@ function UserModePage() {
               </Typography>
             </Button>
 
-            {/* 控制台选项卡 */}
             <Button
               onClick={() => setViewMode('console')}
               sx={{
@@ -1344,7 +1305,6 @@ function UserModePage() {
         </Box>
       </Box>
 
-      {/* CSS动画样式 */}
       <style>
         {`
           @keyframes pulse {
@@ -1384,7 +1344,6 @@ function UserModePage() {
         `}
       </style>
 
-      {/* 路径规划弹窗 */}
       <Dialog 
         open={pathPlanningOpen} 
         onClose={() => setPathPlanningOpen(false)}
@@ -1528,7 +1487,6 @@ function UserModePage() {
         </DialogActions>
       </Dialog>
 
-      {/* 聊天抽屉 */}
       <Drawer
         anchor="right"
         open={chatOpen}
@@ -1546,7 +1504,6 @@ function UserModePage() {
           }
         }}
       >
-        {/* 聊天框头部 */}
         <Box sx={{
           bgcolor: '#C6F2ED',
           borderBottom: '1px solid #B8E6E1',
@@ -1591,7 +1548,6 @@ function UserModePage() {
           </IconButton>
         </Box>
         
-        {/* 消息显示区 */}
         <Box sx={{ 
           flex: 1, 
           overflowY: 'auto', 
@@ -1621,7 +1577,6 @@ function UserModePage() {
               alignItems: 'flex-start',
               gap: 2
             }}>
-              {/* 头像 */}
               <Box sx={{
                 width: 32,
                 height: 32,
@@ -1638,7 +1593,6 @@ function UserModePage() {
                 {msg.role === 'user' ? 'U' : 'L'}
               </Box>
               
-              {/* 消息气泡 */}
               <Box
                 sx={{
                   bgcolor: msg.role === 'user' ? '#CEB1E1' : '#F0F8FF',
@@ -1685,13 +1639,11 @@ function UserModePage() {
           <div ref={messagesEndRef} />
         </Box>
         
-        {/* 输入区域 */}
         <Box sx={{
           borderTop: '1px solid #C6F2ED',
           bgcolor: '#F8FDFD',
           p: 1.5
         }}>
-          {/* 输入区上方提示 */}
           <Typography variant="caption" sx={{ 
             color: '#5A5A5A', 
             mb: 1, 
@@ -1703,7 +1655,6 @@ function UserModePage() {
             ❉ Luma's responses are AI-generated. Please verify important information.
           </Typography>
           
-          {/* 输入框和发送按钮 */}
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'flex-end', 

@@ -32,9 +32,6 @@ import DataUsageIcon from '@mui/icons-material/DataUsage';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 function ConcentrationPage() {
-  // 预留两个后端API接口（可根据需要扩展）
-  // const API_HELLO = 'http://localhost:5000/api/hello';
-  // const API_IMAGE = 'http://localhost:5000/api/image';
 
   const [uploading, setUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState('');
@@ -43,7 +40,6 @@ function ConcentrationPage() {
   const [dotIndex, setDotIndex] = useState(0);
   const navigate = useNavigate();
 
-  // 传感层弹窗相关
   const [sensorDialogOpen, setSensorDialogOpen] = useState(false);
   const [A_total, setA_total] = useState('');
   const [Dop_total, setDop_total] = useState('');
@@ -57,10 +53,8 @@ function ConcentrationPage() {
   const [sensorError, setSensorError] = useState('');
   const [sensorConfigured, setSensorConfigured] = useState(false);
 
-  // Reference PDF 弹窗相关
   const [referenceOpen, setReferenceOpen] = useState(false);
 
-  // 对话相关状态
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState([
     { role: 'agent', text: 'Hi, welcome to use our latest model Lumaris 4-Octo! You can call me Luma, what can I do for you?' },
@@ -71,7 +65,6 @@ function ConcentrationPage() {
   const [typing, setTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // 新增：组件2相关状态
   const [strandType, setStrandType] = useState('');
   const [strandValue, setStrandValue] = useState('');
   const [strandBtnActive, setStrandBtnActive] = useState(false);
@@ -79,7 +72,6 @@ function ConcentrationPage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [analysisStatus, setAnalysisStatus] = useState('');
 
-  // 聊天相关功能
   useEffect(() => {
     if (chatOpen && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -100,9 +92,7 @@ function ConcentrationPage() {
       });
       const data = await res.json();
       
-      // 检查是否是图像响应
       if (typeof data.reply === 'object' && data.reply.type === 'image') {
-        // 处理图像响应
         const agentMsg = {
           role: 'agent',
           text: data.reply.message,
@@ -114,7 +104,6 @@ function ConcentrationPage() {
         setLoading(false);
         setTyping(false);
       } else {
-        // 处理文本响应 - 逐字显示
         let idx = 0;
         setTyping(true);
         let currentText = '';
@@ -143,7 +132,6 @@ function ConcentrationPage() {
     }
   };
 
-  // 组件2按钮点击处理
   const handleStrandBtnClick = () => {
     if (!strandType || !strandValue || strandLocked) {
       return;
@@ -152,7 +140,6 @@ function ConcentrationPage() {
     setStrandLocked(true);
   };
 
-  // 检查后端服务状态
   const checkBackendServices = async () => {
     const services = [
       { name: 'Sensor Layer API', url: 'http://localhost:5002/api/sensor-layer' },
@@ -162,16 +149,15 @@ function ConcentrationPage() {
     for (const service of services) {
       try {
         const response = await fetch(service.url, { method: 'OPTIONS' });
-        console.log(`${service.name}: 连接正常`);
+        console.log(`${service.name}: connection successful`);
       } catch (err) {
-        console.error(`${service.name}: 连接失败`);
+        console.error(`${service.name}: connection failed`);
         return { success: false, service: service.name };
       }
     }
     return { success: true };
   };
 
-  // 开始分析按钮点击处理 - 修改为同时发送两个请求
   const handleStartAnalyze = async () => {
     if (!strandLocked || analyzing || !sensorConfigured) return;
     
@@ -179,7 +165,6 @@ function ConcentrationPage() {
     setAnalyzing(true);
     setAnalysisStatus('checking backend services...');
     
-    // 首先检查后端服务
     const serviceCheck = await checkBackendServices();
     if (!serviceCheck.success) {
       setAnalysisStatus(`backend service not running: ${serviceCheck.service || 'unknown service'}`);
@@ -188,7 +173,6 @@ function ConcentrationPage() {
     }
     
     try {
-      // 准备sensor layer数据
       const sensorData = {
         A_total: parseFloat(A_total),
         Dop_total: parseFloat(Dop_total),
@@ -203,21 +187,18 @@ function ConcentrationPage() {
       console.log('Sending sensor layer data:', sensorData);
       setAnalysisStatus('Sending request to backend...');
       
-      // 并行发送两个请求
       const [strandResponse, sensorResponse] = await Promise.all([
-        // 发送 strand 数据
         fetch('http://localhost:5003/strand_replace_result', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ type: strandType, value: strandValue }),
-          timeout: 30000 // 30秒超时
+          timeout: 30000 
         }),
-        // 发送 sensor layer 数据
         fetch('http://localhost:5002/api/sensor-layer', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(sensorData),
-          timeout: 30000 // 30秒超时
+          timeout: 30000 
         })
       ]);
 
@@ -225,14 +206,13 @@ function ConcentrationPage() {
       console.log('Strand response status:', strandResponse.status);
       setAnalysisStatus('Processing response data...');
 
-      // 处理 sensor layer 响应
       if (sensorResponse.ok) {
         const data = await sensorResponse.json();
         console.log('Sensor API response data:', data);
         
         if (data.status === 'success' && data.filename) {
           const url = `http://localhost:5002/api/sensor-layer-image/${data.filename}`;
-          console.log('设置图像URL:', url);
+          console.log('image URL:', url);
           setImageUrl(url);
           setAnalysisStatus('Image generated successfully!');
         } else {
@@ -245,7 +225,6 @@ function ConcentrationPage() {
         setAnalysisStatus(`API request failed: ${sensorResponse.status}`);
       }
 
-      // 处理strand响应
       if (strandResponse.ok) {
         const strandData = await strandResponse.json();
         console.log('Strand API response data:', strandData);
@@ -263,7 +242,6 @@ function ConcentrationPage() {
     console.log('Analysis completed !');
   };
 
-  // 保证body和html无留白
   useEffect(() => {
     document.body.style.margin = '0';
     document.body.style.padding = '0';
@@ -274,22 +252,8 @@ function ConcentrationPage() {
     document.documentElement.style.width = '100vw';
     document.documentElement.style.height = '100vh';
     
-    // 注释掉初始图像获取，避免干扰分析结果
-    // const controller = new AbortController();
-    // fetch('http://localhost:5009/api/imageforconcentration', { signal: controller.signal })
-    //   .then(res => res.ok ? res.blob() : null)
-    //   .then(blob => {
-    //     if (blob) setImageUrl(URL.createObjectURL(blob));
-    //   })
-    //   .catch(err => {
-    //     if (err?.name !== 'AbortError') {
-    //       console.warn('imageforconcentration 请求失败: ', err);
-    //     }
-    //   });
-    // return () => controller.abort();
   }, []);
 
-  // 动态打点动画
   useEffect(() => {
     if (imageUrl) return;
     let idx = 0;
@@ -303,7 +267,6 @@ function ConcentrationPage() {
 
   const handleSensorOpen = () => {
     setSensorDialogOpen(true);
-    // 如果已经配置过，保留之前的值，否则清空
     if (!sensorConfigured) {
       setA_total('');
       setDop_total('');
@@ -330,7 +293,6 @@ function ConcentrationPage() {
     setSensorSubmitting(true);
     setSensorError('');
     
-    // 只保存参数，不进行网络传输
     setSensorConfigured(true);
     setSensorDialogOpen(false);
     setSensorSubmitting(false);
@@ -349,7 +311,6 @@ function ConcentrationPage() {
         backgroundImage: 'linear-gradient(135deg, #E1FAFB 0%, #F0F8FF 50%, #E1FAFB 100%)',
       }}
     >
-      {/* 顶部导航栏 - 采用DeveloperMode样式 */}
       <Box sx={{
         bgcolor: '#C6F2ED',
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -367,7 +328,6 @@ function ConcentrationPage() {
           justifyContent: 'space-between',
           alignItems: 'center'
         }}>
-          {/* Logo区域 */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="h4" sx={{ 
               fontWeight: 800, 
@@ -382,7 +342,6 @@ function ConcentrationPage() {
             </Typography>
           </Box>
           
-          {/* 导航菜单 */}
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <Button 
               onClick={() => setChatOpen(true)}
@@ -431,9 +390,7 @@ function ConcentrationPage() {
         </Box>
       </Box>
 
-      {/* 主要内容区域 */}
       <Box sx={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-        {/* 左侧控制面板 */}
         <Paper
           elevation={0}
           sx={{
@@ -448,7 +405,6 @@ function ConcentrationPage() {
             Analysis Configuration
           </Typography>
 
-          {/* 模型状态卡片 */}
           <Card sx={{ mb: 3, bgcolor: '#F0F8FF', border: '1px solid #C6F2ED' }}>
             <CardHeader
               avatar={<DataUsageIcon sx={{ color: '#10B981' }} />}
@@ -494,7 +450,6 @@ function ConcentrationPage() {
             </CardContent>
           </Card>
 
-          {/* 传感层配置 */}
           <Card sx={{ mb: 3, bgcolor: '#F0F8FF', border: '1px solid #C6F2ED' }}>
             <CardHeader
               avatar={<SettingsIcon sx={{ color: '#6B73FF' }} />}
@@ -535,7 +490,6 @@ function ConcentrationPage() {
             </CardContent>
           </Card>
 
-          {/* 分析配置 */}
           <Card sx={{ mb: 3, bgcolor: '#F0F8FF', border: '1px solid #C6F2ED' }}>
             <CardHeader
               avatar={<PlayArrowIcon sx={{ color: '#CEB1E1' }} />}
@@ -707,7 +661,6 @@ function ConcentrationPage() {
             </CardContent>
           </Card>
 
-          {/* 参考文档卡片 - 移到最后 */}
           <Card sx={{ mb: 3, bgcolor: '#F0F8FF', border: '1px solid #C6F2ED' }}>
             <CardHeader
               avatar={<MenuBookIcon sx={{ color: '#F59E0B' }} />}
@@ -745,7 +698,6 @@ function ConcentrationPage() {
           </Card>
         </Paper>
 
-        {/* 右侧数据展示区域 */}
         <Box sx={{ flex: 1, p: 3 }}>
           <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#2D3748' }}>
             Visualization Results
@@ -814,7 +766,6 @@ function ConcentrationPage() {
         </Box>
       </Box>
 
-      {/* 传感层弹窗 */}
       <Dialog open={sensorDialogOpen} onClose={handleSensorClose} maxWidth="sm" fullWidth>
         <DialogTitle sx={{ bgcolor: '#C6F2ED', color: '#2D3748' }}>
           Sensor Layer Parameter Input
@@ -1003,7 +954,6 @@ function ConcentrationPage() {
         </DialogActions>
       </Dialog>
 
-      {/* Reference PDF 弹窗 */}
       <Dialog open={referenceOpen} onClose={() => setReferenceOpen(false)} maxWidth="md" fullWidth>
         <DialogTitle sx={{ bgcolor: '#C6F2ED', color: '#2D3748' }}>
           Modeling Algorithm Reference
@@ -1027,7 +977,6 @@ function ConcentrationPage() {
         </DialogActions>
       </Dialog>
 
-      {/* Lumaris聊天抽屉 */}
       <Drawer
         anchor="right"
         open={chatOpen}
@@ -1045,7 +994,6 @@ function ConcentrationPage() {
           }
         }}
       >
-        {/* 聊天框头部 */}
         <Box sx={{
           bgcolor: '#C6F2ED',
           borderBottom: '1px solid #B8E6E1',
@@ -1090,7 +1038,6 @@ function ConcentrationPage() {
           </IconButton>
         </Box>
         
-        {/* 消息显示区 */}
         <Box sx={{ 
           flex: 1, 
           overflowY: 'auto', 
@@ -1120,7 +1067,6 @@ function ConcentrationPage() {
               alignItems: 'flex-start',
               gap: 2
             }}>
-              {/* 头像 */}
               <Box sx={{
                 width: 32,
                 height: 32,
@@ -1137,7 +1083,6 @@ function ConcentrationPage() {
                 {msg.role === 'user' ? 'U' : 'L'}
               </Box>
               
-              {/* 消息气泡 */}
               <Box
                 sx={{
                   bgcolor: msg.role === 'user' ? '#CEB1E1' : '#F0F8FF',
@@ -1184,13 +1129,11 @@ function ConcentrationPage() {
           <div ref={messagesEndRef} />
         </Box>
         
-        {/* 输入区域 */}
         <Box sx={{
           borderTop: '1px solid #C6F2ED',
           bgcolor: '#F8FDFD',
           p: 1.5
         }}>
-          {/* 输入区上方提示 */}
           <Typography variant="caption" sx={{ 
             color: '#5A5A5A', 
             mb: 1, 
@@ -1202,7 +1145,6 @@ function ConcentrationPage() {
             ❉ Luma's responses are AI-generated. Please verify important information.
           </Typography>
           
-          {/* 输入框和发送按钮 */}
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'flex-end', 

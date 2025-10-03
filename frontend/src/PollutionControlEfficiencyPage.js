@@ -12,7 +12,6 @@ import AlgaeBacteriaModeling from './components/AlgaeBacteriaModeling';
 function PollutionControlEfficiencyPage() {
   const [chatOpen, setChatOpen] = useState(false);
 
-  // 保证body和html无留白
   useEffect(() => {
     document.body.style.margin = '0';
     document.body.style.padding = '0';
@@ -37,7 +36,6 @@ function PollutionControlEfficiencyPage() {
         backgroundImage: 'linear-gradient(135deg, #E1FAFB 0%, #F0F8FF 50%, #E1FAFB 100%)',
       }}
     >
-      {/* 顶部导航栏 - 采用DeveloperMode样式 */}
       <Box sx={{
         bgcolor: '#C6F2ED',
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -55,7 +53,6 @@ function PollutionControlEfficiencyPage() {
           justifyContent: 'space-between',
           alignItems: 'center'
         }}>
-          {/* Logo区域 */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="h4" sx={{ 
               fontWeight: 800, 
@@ -70,7 +67,6 @@ function PollutionControlEfficiencyPage() {
             </Typography>
           </Box>
           
-          {/* 导航菜单 */}
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <Button 
               onClick={() => setChatOpen(true)}
@@ -119,7 +115,6 @@ function PollutionControlEfficiencyPage() {
         </Box>
       </Box>
 
-      {/* 主要内容区域 */}
       <Box sx={{ 
         flex: 1, 
         overflow: 'auto',

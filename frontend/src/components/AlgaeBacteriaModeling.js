@@ -49,7 +49,6 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import GSMIntegration from './GSMIntegration';
 import SystemsBiologyReport from './SystemsBiologyReport';
 
-// 实验数据处理类
 class ExperimentalDataProcessor {
   constructor() {
     this.rawData = [
@@ -71,76 +70,61 @@ class ExperimentalDataProcessor {
   }
 }
 
-// 藻菌共生数学模型类
 class AlgaeBacteriaModel {
   constructor() {
-    // 基于实验数据优化的模型参数
     this.params = {
-      // 蓝藻参数 - 根据实验数据校准
-      mu_max_algae: 0.03,     // 最大比生长速率 (1/day) - 降低以匹配实验
-      K_s_algae: 0.01,        // 半饱和常数 (g/L) - 降低
-      K_I: 50,                // 光照半饱和常数 (μmol/m²/s)
-      I_0: 200,               // 光照强度 (μmol/m²/s)
-      Y_algae_sucrose: 0.8,   // 蔗糖产出系数 - 增加以显示蔗糖生产
+      mu_max_algae: 0.03,
+      K_s_algae: 0.01,
+      K_I: 50,
+      I_0: 200,
+      Y_algae_sucrose: 0.8,
       
-      // 大肠杆菌参数 - 根据共培养数据优化
-      mu_max_bacteria: 0.08,  // 最大比生长速率 (1/day) - 匹配实验增长
-      K_s_bacteria: 0.005,    // 蔗糖半饱和常数 (g/L) - 降低
-      Y_bacteria_sucrose: 0.5, // 蔗糖利用效率
+      mu_max_bacteria: 0.08,
+      K_s_bacteria: 0.005,
+      Y_bacteria_sucrose: 0.5,
       
-      // 环境参数
-      k_d_algae: 0.02,        // 蓝藻死亡率 (1/day) - 增加衰减
-      k_d_bacteria: 0.01,     // 细菌死亡率 (1/day) - 降低
-      k_inhibition: 0.5,      // 相互抑制系数
+      k_d_algae: 0.02,
+      k_d_bacteria: 0.01,
+      k_inhibition: 0.5,
       
-      // 初始条件 - 匹配实验
-      X_algae_0: 0.0157,      // 初始蓝藻浓度 (实验数据)
-      X_bacteria_0: 0.0123,   // 初始细菌浓度 (实验数据)
-      S_sucrose_0: 0.0,       // 初始蔗糖浓度
+      X_algae_0: 0.0157,
+      X_bacteria_0: 0.0123,
+      S_sucrose_0: 0.0,
     };
   }
 
-  // Monod动力学方程
   monodKinetics(S, K_s, mu_max) {
     return mu_max * S / (K_s + S);
   }
 
-  // 光照限制函数
   lightLimitation(I) {
     return I / (this.params.K_I + I);
   }
 
-  // 微分方程组 (系统生物学表示) - 优化以匹配实验数据
   systemODE(t, y) {
     const [X_algae, X_bacteria, S_sucrose] = y;
     
-    // 光照强度 (简化为恒定光照，匹配实验条件)
     const I_t = this.params.I_0;
     
-    // 相互抑制效应
     const inhibition_algae = 1 / (1 + this.params.k_inhibition * X_bacteria);
-    const competition_bacteria = 1 + 0.1 * X_algae; // 轻微竞争效应
+    const competition_bacteria = 1 + 0.1 * X_algae;
     
-    // 蓝藻生长速率 - 在共培养中受抑制
-    const nutrient_limitation = 0.1 + 0.9 * Math.exp(-t / 50); // 营养逐渐耗尽
+    const nutrient_limitation = 0.1 + 0.9 * Math.exp(-t / 50);
     const mu_algae = this.params.mu_max_algae * this.lightLimitation(I_t) * inhibition_algae * nutrient_limitation;
     
-    // 细菌生长速率 - 基于蔗糖和其他营养
-    const base_nutrients = 0.01; // 基础营养支持
+    const base_nutrients = 0.01;
     const total_substrate = S_sucrose + base_nutrients;
     const mu_bacteria = this.monodKinetics(total_substrate, this.params.K_s_bacteria, this.params.mu_max_bacteria) / competition_bacteria;
     
-    // 微分方程 - 考虑实际的生长模式
     const dX_algae_dt = mu_algae * X_algae - this.params.k_d_algae * X_algae * (1 + X_bacteria * 0.5);
     const dX_bacteria_dt = mu_bacteria * X_bacteria - this.params.k_d_bacteria * X_bacteria;
     const dS_sucrose_dt = this.params.Y_algae_sucrose * mu_algae * X_algae 
                          - (1 / this.params.Y_bacteria_sucrose) * mu_bacteria * X_bacteria
-                         - 0.001 * S_sucrose; // 自然降解
+                         - 0.001 * S_sucrose;
     
     return [dX_algae_dt, dX_bacteria_dt, Math.max(0, dS_sucrose_dt)];
   }
 
-  // 四阶Runge-Kutta求解器
   rungeKutta4(t0, y0, h, n_steps) {
     const results = [{ t: t0, y: [...y0] }];
     let t = t0;
@@ -167,9 +151,7 @@ class AlgaeBacteriaModel {
     return results;
   }
 
-  // 参数估计 (最小二乘法)
   parameterEstimation(experimentalData) {
-    // 简化的参数拟合算法
     const objective = (params) => {
       this.params = { ...this.params, ...params };
       const simulation = this.simulate(240, 1);
@@ -190,7 +172,6 @@ class AlgaeBacteriaModel {
       return error;
     };
 
-    // 简单的网格搜索优化
     let bestParams = { ...this.params };
     let bestError = objective(bestParams);
 
@@ -219,7 +200,6 @@ class AlgaeBacteriaModel {
     return { params: bestParams, error: bestError };
   }
 
-  // 主要仿真函数
   simulate(duration = 240, timestep = 1) {
     const y0 = [
       this.params.X_algae_0,
@@ -232,7 +212,6 @@ class AlgaeBacteriaModel {
   }
 }
 
-// 主要组件
 function AlgaeBacteriaModeling() {
   const [model] = useState(new AlgaeBacteriaModel());
   const [dataProcessor] = useState(new ExperimentalDataProcessor());
@@ -247,7 +226,6 @@ function AlgaeBacteriaModeling() {
     const expData = dataProcessor.getProcessedData();
     setExperimentalData(expData);
     
-    // 初始仿真
     const initialSim = model.simulate(240, 1);
     setSimulationData(initialSim);
   }, [model, dataProcessor]);
@@ -284,7 +262,6 @@ function AlgaeBacteriaModeling() {
     }));
   };
 
-  // 准备图表数据
   const chartData = simulationData.map(point => ({
     time: point.t,
     algae_sim: point.algae,
@@ -292,7 +269,6 @@ function AlgaeBacteriaModeling() {
     sucrose_sim: point.sucrose,
   }));
 
-  // 合并实验数据
   const combinedData = chartData.map(sim => {
     const exp = experimentalData.find(e => Math.abs(e.time - sim.time) < 12);
     return {
@@ -308,7 +284,6 @@ function AlgaeBacteriaModeling() {
       bgcolor: '#f8fafc',
       p: 0
     }}>
-      {/* 专业化头部 */}
       <Paper elevation={2} sx={{ mb: 3, borderRadius: 2 }}>
         <Box sx={{ p: 4, bgcolor: '#f8fafc', borderRadius: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
@@ -355,7 +330,6 @@ function AlgaeBacteriaModeling() {
         </Box>
       </Paper>
 
-      {/* 专业化标签页 */}
       <Box sx={{ mb: 3 }}>
         <Tabs 
           value={tabValue} 
@@ -382,19 +356,15 @@ function AlgaeBacteriaModeling() {
         </Tabs>
       </Box>
 
-      {/* 内容区域 */}
       <Box sx={{ maxWidth: 1400, mx: 'auto', p: 3 }}>
 
-      {/* Tab 0: Modeling & Simulation */}
       {tabValue === 0 && (
         <Box sx={{ 
           display: 'grid', 
           gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' },
           gap: 3
         }}>
-          {/* 左侧：图表区域 */}
           <Box>
-            {/* 控制面板 */}
             <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a202c' }}>
@@ -423,7 +393,6 @@ function AlgaeBacteriaModeling() {
               </Box>
             </Paper>
 
-            {/* 生长曲线图表 */}
             <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#1a202c' }}>
                 Growth Curve Prediction vs Experimental Data
@@ -490,7 +459,6 @@ function AlgaeBacteriaModeling() {
               </Box>
             </Paper>
 
-            {/* 蔗糖浓度图表 */}
             <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#1a202c' }}>
                 Sucrose Concentration Dynamics
@@ -530,9 +498,7 @@ function AlgaeBacteriaModeling() {
             </Paper>
           </Box>
 
-          {/* 右侧：参数调节面板 */}
           <Box>
-            {/* 参数拟合结果 */}
             {fittedParams && (
               <Alert severity="success" sx={{ mb: 3, borderRadius: 2 }}>
                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>DATA UPLOADED (.csv)</Typography>
@@ -540,7 +506,6 @@ function AlgaeBacteriaModeling() {
               </Alert>
             )}
 
-            {/* 蓝藻参数 */}
             <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 3, color: '#2e7d32', fontWeight: 600 }}>
                 Algae Parameters
@@ -589,7 +554,6 @@ function AlgaeBacteriaModeling() {
               </Box>
             </Paper>
 
-            {/* 细菌参数 */}
             <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 3, color: '#1976d2', fontWeight: 600 }}>
                 Bacteria Parameters
@@ -641,14 +605,12 @@ function AlgaeBacteriaModeling() {
         </Box>
       )}
 
-      {/* Tab 1: 数据分析 - 新布局 */}
       {tabValue === 1 && (
         <Box sx={{ 
           display: 'grid', 
           gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
           gap: 3
         }}>
-          {/* 左侧：实验数据表格 */}
           <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
             <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#1a202c' }}>
               Experimental Data Analysis
@@ -710,9 +672,7 @@ function AlgaeBacteriaModeling() {
             </TableContainer>
           </Paper>
 
-          {/* 右侧：统计分析和拟合图 */}
           <Box>
-            {/* 统计摘要 */}
             <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#1a202c' }}>
                 Statistical Summary
@@ -745,7 +705,6 @@ function AlgaeBacteriaModeling() {
               </Box>
             </Paper>
 
-            {/* 模型拟合分析 */}
             <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
               <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#1a202c' }}>
                 Model Fitting Analysis
@@ -813,10 +772,8 @@ function AlgaeBacteriaModeling() {
         </Box>
       )}
 
-      {/* Tab 2: 系统方程 */}
       {tabValue === 2 && (
         <Box>
-          {/* 模型概述 */}
           <Paper elevation={1} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
             <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#1a202c' }}>
               Mathematical Model of Algae-Bacteria Symbiosis System (Algae Dominant)  
@@ -1084,7 +1041,7 @@ function AlgaeBacteriaModeling() {
         </Box>
       )}
 
-      {/* Tab 3: GSM模型 */}
+     
       {tabValue === 3 && (
         <GSMModelingComponent />
       )}

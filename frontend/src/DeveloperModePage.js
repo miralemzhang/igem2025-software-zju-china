@@ -32,14 +32,12 @@ function DeveloperModePage() {
   const [typing, setTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // 滚动到底部
   useEffect(() => {
     if (chatOpen && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, chatOpen]);
 
-  // 确保 body 和 html 没有 margin/padding，且100%高宽
   useEffect(() => {
     document.body.style.margin = '0';
     document.body.style.padding = '0';
@@ -67,9 +65,7 @@ function DeveloperModePage() {
       });
       const data = await res.json();
       
-      // 检查是否是图像响应
       if (typeof data.reply === 'object' && data.reply.type === 'image') {
-        // 处理图像响应
         const agentMsg = {
           role: 'agent',
           text: data.reply.message,
@@ -81,7 +77,6 @@ function DeveloperModePage() {
         setLoading(false);
         setTyping(false);
       } else {
-        // 处理文本响应 - 逐字显示
         let idx = 0;
         setTyping(true);
         let currentText = '';
@@ -110,7 +105,6 @@ function DeveloperModePage() {
     }
   };
 
-  // 导航卡片数据
   const navigationCards = [
     {
       title: 'Strand Replacement Reaction',
@@ -162,7 +156,6 @@ function DeveloperModePage() {
         backgroundImage: 'linear-gradient(135deg, #E1FAFB 0%, #F0F8FF 50%, #E1FAFB 100%)',
       }}
     >
-      {/* 顶部导航栏 */}
       <Box sx={{
         bgcolor: '#C6F2ED',
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -180,7 +173,6 @@ function DeveloperModePage() {
           justifyContent: 'space-between',
           alignItems: 'center'
         }}>
-          {/* Logo区域 */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="h4" sx={{ 
               fontWeight: 800, 
@@ -195,7 +187,6 @@ function DeveloperModePage() {
             </Typography>
           </Box>
           
-          {/* 导航菜单 */}
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <Button 
               onClick={() => setChatOpen(true)}
@@ -244,7 +235,6 @@ function DeveloperModePage() {
         </Box>
       </Box>
       
-      {/* 主要内容区域 */}
       <Box sx={{ 
         flex: 1,
         display: 'flex',
@@ -258,7 +248,6 @@ function DeveloperModePage() {
       }}>
         
         
-        {/* 导航卡片网格 */}
         <Box sx={{ 
           display: 'flex',
           justifyContent: 'center',
@@ -307,7 +296,6 @@ function DeveloperModePage() {
                       textAlign: 'center',
                       gap: 2.5
                     }}>
-                      {/* 图标 */}
                       <Box
                         sx={{
                           width: 80,
@@ -326,7 +314,6 @@ function DeveloperModePage() {
                         {React.cloneElement(card.icon, { sx: { fontSize: 42 } })}
                       </Box>
                       
-                      {/* 标题 */}
                       <Typography 
                         variant="h5" 
                         sx={{ 
@@ -340,7 +327,6 @@ function DeveloperModePage() {
                         {card.title}
                       </Typography>
                       
-                      {/* 描述 */}
                       <Typography 
                         variant="body1" 
                         sx={{ 
@@ -354,7 +340,6 @@ function DeveloperModePage() {
                         {card.description}
                       </Typography>
                       
-                      {/* 按钮 */}
                       <Button
                         variant="contained"
                         sx={{
@@ -387,7 +372,6 @@ function DeveloperModePage() {
         </Box>
       </Box>
 
-      {/* 聊天抽屉 */}
       <Drawer
         anchor="right"
         open={chatOpen}
@@ -405,7 +389,6 @@ function DeveloperModePage() {
           }
         }}
       >
-        {/* 聊天框头部 */}
         <Box sx={{
           bgcolor: '#C6F2ED',
           borderBottom: '1px solid #B8E6E1',
@@ -450,7 +433,6 @@ function DeveloperModePage() {
           </IconButton>
         </Box>
         
-        {/* 消息显示区 */}
         <Box sx={{ 
           flex: 1, 
           overflowY: 'auto', 
@@ -480,7 +462,6 @@ function DeveloperModePage() {
               alignItems: 'flex-start',
               gap: 2
             }}>
-              {/* 头像 */}
               <Box sx={{
                 width: 32,
                 height: 32,
@@ -497,7 +478,6 @@ function DeveloperModePage() {
                 {msg.role === 'user' ? 'U' : 'L'}
               </Box>
               
-              {/* 消息气泡 */}
               <Box
                 sx={{
                   bgcolor: msg.role === 'user' ? '#CEB1E1' : '#F0F8FF',
@@ -544,13 +524,11 @@ function DeveloperModePage() {
           <div ref={messagesEndRef} />
         </Box>
         
-        {/* 输入区域 */}
         <Box sx={{
           borderTop: '1px solid #C6F2ED',
           bgcolor: '#F8FDFD',
           p: 1.5
         }}>
-          {/* 输入区上方提示 */}
           <Typography variant="caption" sx={{ 
             color: '#5A5A5A', 
             mb: 1, 
@@ -562,7 +540,6 @@ function DeveloperModePage() {
             ❉ Luma's responses are AI-generated. Please verify important information.
           </Typography>
           
-          {/* 输入框和发送按钮 */}
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'flex-end', 

@@ -24,17 +24,14 @@ function PollutionControlPage() {
   const navigate = useNavigate();
   const [chatOpen, setChatOpen] = useState(false);
   
-  // Input states
   const [leadConcentration, setLeadConcentration] = useState('');
   const [targetEfficiency, setTargetEfficiency] = useState(95);
   
-  // Output states
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
   const [plotImage, setPlotImage] = useState(null);
 
-  // API call function
   const analyzePollutionControl = async () => {
     if (!leadConcentration || parseFloat(leadConcentration) <= 0) {
       setError('Please enter a valid lead concentration');
@@ -73,7 +70,6 @@ function PollutionControlPage() {
     }
   };
 
-  // 保证body和html无留白
   useEffect(() => {
     document.body.style.margin = '0';
     document.body.style.padding = '0';
@@ -98,7 +94,6 @@ function PollutionControlPage() {
         backgroundImage: 'linear-gradient(135deg, #E1FAFB 0%, #F0F8FF 50%, #E1FAFB 100%)',
       }}
     >
-      {/* 顶部导航栏 - 采用DeveloperMode样式 */}
       <Box sx={{
         bgcolor: '#C6F2ED',
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -116,7 +111,6 @@ function PollutionControlPage() {
           justifyContent: 'space-between',
           alignItems: 'center'
         }}>
-          {/* Logo区域 */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="h4" sx={{ 
               fontWeight: 800, 
@@ -131,7 +125,6 @@ function PollutionControlPage() {
             </Typography>
           </Box>
           
-          {/* 导航菜单 */}
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <Button 
               onClick={() => setChatOpen(true)}
@@ -180,13 +173,12 @@ function PollutionControlPage() {
         </Box>
       </Box>
 
-      {/* 主要内容区域 */}
       <Box sx={{ 
         flex: 1, 
         p: 3,
         display: 'flex',
         alignItems: 'stretch',
-        minHeight: 'calc(100vh - 120px)', // 减去导航栏高度
+        minHeight: 'calc(100vh - 120px)',
         overflow: 'hidden'
       }}>
         <Box sx={{ 
@@ -197,14 +189,12 @@ function PollutionControlPage() {
           gap: 3,
           height: '100%'
         }}>
-          {/* 左侧面板 - 输入和输出 */}
           <Box sx={{ 
             width: '45%',
             display: 'flex',
             flexDirection: 'column',
             gap: 2
           }}>
-            {/* Input Panel */}
             <Card elevation={2} sx={{ 
               bgcolor: '#F8FDFD', 
               border: '1px solid #C6F2ED',
@@ -297,7 +287,6 @@ function PollutionControlPage() {
               </CardContent>
             </Card>
 
-            {/* Results Panel */}
             <Card elevation={2} sx={{ 
               bgcolor: '#F8FDFD', 
               border: '1px solid #C6F2ED',
@@ -316,7 +305,6 @@ function PollutionControlPage() {
                       Treatment Prediction Results
                     </Typography>
                     
-                    {/* 警告检查 */}
                     {results.warning_message && (
                       <Alert severity="warning" sx={{ mb: 2 }}>
                         <Typography variant="body2">
@@ -410,7 +398,6 @@ function PollutionControlPage() {
             </Card>
           </Box>
 
-          {/* 右侧面板 - 图像显示 */}
           <Box sx={{ 
             width: '55%',
             display: 'flex'

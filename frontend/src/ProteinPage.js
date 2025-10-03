@@ -33,7 +33,6 @@ import { useNavigate, Link } from 'react-router-dom';
 function ProteinPage() {
   const navigate = useNavigate();
   
-  // 状态管理
   const [uploading, setUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState('');
   const [analysisData, setAnalysisData] = useState(null);
@@ -42,7 +41,6 @@ function ProteinPage() {
   const [correlationData, setCorrelationData] = useState(null);
   const [fittingResults, setFittingResults] = useState(null);
   
-  // 对话相关状态
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState([
     { role: 'agent', text: 'Hi! I\'m Lumaris, your protein production analysis assistant. How can I help you today?' }
@@ -52,7 +50,6 @@ function ProteinPage() {
   const [typing, setTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // 初始化设置
   useEffect(() => {
     document.body.style.margin = '0';
     document.body.style.padding = '0';
@@ -63,21 +60,18 @@ function ProteinPage() {
     document.documentElement.style.width = '100vw';
     document.documentElement.style.height = '100vh';
     
-    // 加载实验数据
     loadExperimentData();
     loadAnalysisChart();
     loadCorrelationAnalysis();
     loadFittingResults();
   }, []);
 
-  // 滚动到聊天底部
   useEffect(() => {
     if (chatOpen && messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages, chatOpen]);
 
-  // 加载实验数据
   const loadExperimentData = async () => {
     try {
       const response = await fetch('http://localhost:5700/api/protein-data');
@@ -90,7 +84,6 @@ function ProteinPage() {
     }
   };
 
-  // 加载分析图表
   const loadAnalysisChart = async () => {
     try {
       const response = await fetch('http://localhost:5700/api/protein-analysis-chart');
@@ -103,7 +96,6 @@ function ProteinPage() {
     }
   };
 
-  // 加载相关性分析
   const loadCorrelationAnalysis = async () => {
     try {
       const response = await fetch('http://localhost:5700/api/protein-correlation');
@@ -116,7 +108,6 @@ function ProteinPage() {
     }
   };
 
-  // 加载拟合结果
   const loadFittingResults = async () => {
     try {
       const response = await fetch('http://localhost:5700/api/protein-fitting');
@@ -129,7 +120,6 @@ function ProteinPage() {
     }
   };
 
-  // 处理文件上传
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -148,7 +138,6 @@ function ProteinPage() {
         const result = await response.json();
         setUploadResult('File uploaded successfully! Analyzing data...');
         setAnalysisData(result);
-        // 重新加载所有分析结果
         loadAnalysisChart();
         loadCorrelationAnalysis();
         loadFittingResults();
@@ -162,7 +151,6 @@ function ProteinPage() {
     setUploading(false);
   };
 
-  // 处理聊天发送
   const handleSend = async () => {
     if (!input.trim() || loading || typing) return;
     
@@ -183,7 +171,6 @@ function ProteinPage() {
       
       const data = await response.json();
       
-      // 逐字显示效果
       let idx = 0;
       setTyping(true);
       let currentText = '';
@@ -230,7 +217,6 @@ function ProteinPage() {
         backgroundImage: 'linear-gradient(135deg, #E1FAFB 0%, #F0F8FF 50%, #E1FAFB 100%)',
       }}
     >
-      {/* 顶部导航栏 */}
       <Box sx={{
         bgcolor: '#C6F2ED',
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -248,7 +234,6 @@ function ProteinPage() {
           justifyContent: 'space-between',
           alignItems: 'center'
         }}>
-          {/* Logo区域 */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="h4" sx={{ 
               fontWeight: 800, 
@@ -263,7 +248,6 @@ function ProteinPage() {
             </Typography>
           </Box>
           
-          {/* 导航菜单 */}
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <Button 
               onClick={() => setChatOpen(true)}
@@ -312,7 +296,6 @@ function ProteinPage() {
         </Box>
       </Box>
 
-      {/* 主要内容区域 */}
       <Box sx={{ 
         flex: 1, 
         display: 'flex', 
@@ -325,7 +308,6 @@ function ProteinPage() {
         py: 2,
         gap: 3
       }}>
-        {/* Data Upload Section */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Card sx={{
@@ -433,9 +415,7 @@ function ProteinPage() {
           </Grid>
         </Grid>
 
-        {/* Main Layout: Visualization on left, Analysis panels on right */}
         <Grid container spacing={3} sx={{ alignItems: 'flex-start' }}>
-          {/* Left side: Data Visualization */}
           <Grid item xs={12} md={7} lg={7}>
             <Card sx={{
               background: 'linear-gradient(135deg, rgba(107, 115, 255, 0.05) 0%, rgba(198, 242, 237, 0.1) 100%)',
@@ -485,10 +465,8 @@ function ProteinPage() {
             </Card>
           </Grid>
 
-          {/* Right side: Analysis panels stacked vertically */}
           <Grid item xs={12} md={5} lg={5}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-              {/* Statistical Analysis - Top */}
               <Card sx={{
                 background: 'linear-gradient(135deg, rgba(107, 115, 255, 0.05) 0%, rgba(198, 242, 237, 0.1) 100%)',
                 border: '1px solid rgba(107, 115, 255, 0.15)',
@@ -536,7 +514,6 @@ function ProteinPage() {
                 </CardContent>
               </Card>
 
-              {/* Correlation & Fitting Results - Bottom */}
               <Card sx={{
                 background: 'linear-gradient(135deg, rgba(107, 115, 255, 0.05) 0%, rgba(198, 242, 237, 0.1) 100%)',
                 border: '1px solid rgba(107, 115, 255, 0.15)',
@@ -626,7 +603,6 @@ function ProteinPage() {
         </Grid>
       </Box>
 
-      {/* Lumaris 聊天抽屉 */}
       <Drawer
         anchor="right"
         open={chatOpen}
@@ -645,7 +621,6 @@ function ProteinPage() {
           flexDirection: 'column',
           p: 2
         }}>
-          {/* 聊天头部 */}
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
@@ -662,7 +637,6 @@ function ProteinPage() {
             </IconButton>
           </Box>
 
-          {/* 聊天消息区域 */}
           <Box sx={{ 
             flex: 1, 
             overflow: 'auto',
@@ -700,7 +674,6 @@ function ProteinPage() {
             <div ref={messagesEndRef} />
           </Box>
 
-          {/* 输入区域 */}
           <Box sx={{ display: 'flex', gap: 1 }}>
             <TextField
               fullWidth

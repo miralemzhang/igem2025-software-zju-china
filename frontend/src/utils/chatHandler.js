@@ -1,5 +1,3 @@
-// 通用聊天处理工具函数
-
 export const handleChatResponse = async (
   userMessage,
   setMessages,
@@ -22,9 +20,9 @@ export const handleChatResponse = async (
     });
     const data = await res.json();
     
-    // 检查是否是图像响应
+    
     if (typeof data.reply === 'object' && data.reply.type === 'image') {
-      // 处理图像响应
+    
       const agentMsg = {
         role: 'agent',
         text: data.reply.message,
@@ -36,7 +34,7 @@ export const handleChatResponse = async (
       setLoading(false);
       setTyping(false);
     } else {
-      // 处理文本响应 - 逐字显示
+  
       let idx = 0;
       setTyping(true);
       let currentText = '';
@@ -70,7 +68,7 @@ export const handleChatResponse = async (
   }
 };
 
-// 渲染聊天消息的组件
+
 export const renderChatMessage = (msg, index) => {
   if (msg.type === 'image') {
     return (
@@ -106,7 +104,7 @@ export const renderChatMessage = (msg, index) => {
     );
   }
   
-  // 普通文本消息
+ 
   return (
     <div key={index} className={`message ${msg.role === 'user' ? 'user' : 'agent'}`}>
       <div className="message-content">

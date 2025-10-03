@@ -12,7 +12,6 @@ CORS(app)
 IMG_DIR = os.path.join(os.path.dirname(__file__), 'images')
 os.makedirs(IMG_DIR, exist_ok=True)
 
-# 1. 定义传感层的 ODE 系统
 def sensing_layer_model(t, y, kf1, kr1, kf2, kr2):
     P, A, Dop, PA, A_Dop = y
     dP_dt = -kf1 * P * A + kr1 * PA
@@ -59,7 +58,6 @@ def sensor_layer():
             plt.plot(sol.t, sol.y[2], label=f'Pollutant = {P0} nM')
 
         plt.legend()
-        # 保存图片到backend/images目录
         filename = f'{uuid.uuid4().hex}.png'
         filepath = os.path.join(IMG_DIR, filename)
         plt.savefig(filepath, format='png', bbox_inches='tight')
@@ -67,7 +65,7 @@ def sensor_layer():
         return jsonify({
             'status': 'success',
             'filename': filename,
-            'message': f'仿真完成，图片已保存为 {filename}',
+            'message': f'simulation completed, image saved as {filename}',
         })
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})

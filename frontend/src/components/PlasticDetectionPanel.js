@@ -30,7 +30,6 @@ import {
 import io from 'socket.io-client';
 
 const PlasticDetectionPanel = () => {
-  // 检测状态
   const [isDetecting, setIsDetecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [detectionData, setDetectionData] = useState(null);
@@ -46,11 +45,9 @@ const PlasticDetectionPanel = () => {
   const [autoScroll, setAutoScroll] = useState(true);
   const [waitingTime, setWaitingTime] = useState(0);
 
-  // 引用
   const socketRef = useRef(null);
   const detectionListRef = useRef(null);
 
-  // WebSocket连接初始化
   useEffect(() => {
     const socket = io('http://localhost:5001', {
       timeout: 5000,
@@ -88,7 +85,6 @@ const PlasticDetectionPanel = () => {
         setStatistics(data.statistics);
         setFps(data.fps || 0);
         
-        // 自动滚动到最新检测结果
         if (autoScroll && detectionListRef.current) {
           detectionListRef.current.scrollTop = detectionListRef.current.scrollHeight;
         }
@@ -113,7 +109,6 @@ const PlasticDetectionPanel = () => {
     };
   }, [autoScroll]);
 
-  // 等待时间计时器
   useEffect(() => {
     let interval;
     if (isDetecting && !currentFrame) {
@@ -129,13 +124,11 @@ const PlasticDetectionPanel = () => {
     };
   }, [isDetecting, currentFrame]);
 
-  // 启动检测
   const startDetection = async () => {
     try {
       setError(null);
       setIsDetecting(false); // 重置状态
       
-      // 添加超时控制
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
       
@@ -165,7 +158,6 @@ const PlasticDetectionPanel = () => {
         console.log('🎬 检测已启动');
         setError(null);
         
-        // 设置30秒超时检测视频流
         setTimeout(() => {
           if (isDetecting && !currentFrame) {
             setError('视频流获取超时，请检查摄像头状态和权限');
@@ -191,7 +183,6 @@ const PlasticDetectionPanel = () => {
     }
   };
 
-  // 停止检测
   const stopDetection = async () => {
     try {
       const response = await fetch('http://localhost:5001/api/detection/stop', {
@@ -216,7 +207,6 @@ const PlasticDetectionPanel = () => {
     }
   };
 
-  // 重置统计信息
   const resetStatistics = async () => {
     try {
       await fetch('http://localhost:5001/api/detection/statistics/reset', {
@@ -233,7 +223,6 @@ const PlasticDetectionPanel = () => {
     }
   };
 
-  // 获取塑料类型统计图表数据
   const getPlasticTypesChart = () => {
     const types = Object.entries(statistics.plastic_types || {});
     const total = statistics.total_detections || 1;
@@ -245,7 +234,6 @@ const PlasticDetectionPanel = () => {
     }));
   };
 
-  // 格式化会话时长
   const getSessionDuration = () => {
     if (!statistics.session_start_time) return '00:00:00';
     
@@ -262,7 +250,6 @@ const PlasticDetectionPanel = () => {
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
-      {/* 头部控制区域 */}
       <Paper sx={{
         p: 2,
         background: 'linear-gradient(135deg, #F8FDFD 0%, #F0F8FF 100%)',
@@ -298,7 +285,6 @@ const PlasticDetectionPanel = () => {
             </Box>
           </Box>
           
-          {/* 连接状态指示器 */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Box sx={{
               width: 8,
@@ -318,7 +304,6 @@ const PlasticDetectionPanel = () => {
           </Box>
         </Box>
 
-        {/* 错误信息 */}
         {error && (
           <Alert 
             severity="error" 
@@ -333,7 +318,6 @@ const PlasticDetectionPanel = () => {
           </Alert>
         )}
 
-        {/* 控制按钮 */}
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
           <Button
             variant="contained"
@@ -430,9 +414,7 @@ const PlasticDetectionPanel = () => {
         </Box>
       </Paper>
 
-      {/* 主要内容区域 */}
       <Grid container spacing={2} sx={{ flex: 1 }}>
-        {/* 视频流显示区域 */}
         <Grid item xs={12} md={8}>
           <Paper sx={{
             height: '100%',
@@ -528,7 +510,6 @@ const PlasticDetectionPanel = () => {
                 </Box>
               )}
               
-              {/* 连接状态覆盖层 */}
               {isDetecting && !currentFrame && (
                 <Box sx={{
                   position: 'absolute',
@@ -548,10 +529,8 @@ const PlasticDetectionPanel = () => {
           </Paper>
         </Grid>
 
-        {/* 统计信息和检测结果 */}
         <Grid item xs={12} md={4}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}>
-            {/* 统计信息卡片 */}
             <Paper sx={{
               p: 2,
               background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(198, 242, 237, 0.2) 100%)',
@@ -594,7 +573,6 @@ const PlasticDetectionPanel = () => {
                 会话时长: {getSessionDuration()}
               </Typography>
               
-              {/* 塑料类型分布 */}
               <Typography variant="subtitle2" sx={{ color: '#059669', mb: 1 }}>
                 检测类型分布:
               </Typography>
@@ -624,7 +602,6 @@ const PlasticDetectionPanel = () => {
               ))}
             </Paper>
 
-            {/* 最近检测结果 */}
             <Paper sx={{
               flex: 1,
               p: 2,
@@ -693,7 +670,6 @@ const PlasticDetectionPanel = () => {
         </Grid>
       </Grid>
 
-      {/* CSS动画 */}
       <style>
         {`
           @keyframes pulse {
