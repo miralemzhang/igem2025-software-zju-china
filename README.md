@@ -14,7 +14,7 @@ iLUMA is a comprehensive bioinformatics software tool designed for synthetic bio
   - Monitor: a monitoring dashboard for real-time visualization of sensor data, pollutant dispersion maps, and alerting.
   - Terminal: a control panel for user commands, report generation, and interaction with Lumaris.
 - Developer Console — a research-focused environment that provides tools for model development and validation, including four core scientific modelling modules (for data preprocessing, mechanistic/empirical modelling, predictive simulation, and model evaluation).
-- AI Agent Lumaris — the integrated conversational and graph-generation agent based on a novel Soft-Supervised Mixture of Micro-Experts (SSMoME) and built on Llama3.1 by Meta, used for natural language interaction.
+- AI Agent ***Lumaris*** — the integrated conversational and graph-generation agent based on a novel Soft-Supervised Mixture of Micro-Experts (SSMoME) and built on Llama3.1 by Meta, used for natural language interaction.
 
 ## Quick Start
 
@@ -134,7 +134,7 @@ I would like to express my sincere gratitude to the following individuals and te
 
 ## Contact
 
-- Email: ZJU_China@outlook.com
+- Team Email: ZJU_China@outlook.com
 - Developer: 
    - Email: miralemzhang@gmail.com
    - Blog: https://miralemzhang.github.io/
