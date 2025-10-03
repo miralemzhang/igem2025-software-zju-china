@@ -10,7 +10,6 @@ app = Flask(__name__)
 CORS(app)
 
 def amplify_layer_model(t, y, kf1, kr1, kf2, kr2):
-    # 这里可根据实际信号放大层模型修改，暂复用传感层ODE
     P, A, Dop, PA, A_Dop = y
     dP_dt = -kf1 * P * A + kr1 * PA
     dA_dt = -kf1 * P * A + kr1 * PA - kf2 * A * Dop + kr2 * A_Dop
@@ -63,7 +62,7 @@ def amplify_layer():
         return jsonify({
             'status': 'success',
             'image_base64': img_base64,
-            'message': '仿真完成，返回图片base64',
+            'message': 'done',
         })
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})

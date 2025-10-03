@@ -3,23 +3,16 @@ import numpy as np
 from typing import Dict, List, Tuple
 
 def parse_pollution_data(file_path: str) -> Dict:
-    """
-    解析污染数据Excel文件，提取三个子表的数据
-    """
-    # 读取Excel文件
     df = pd.read_excel(file_path, sheet_name='Sheet1', header=None)
     
-    # 初始化数据字典
     data = {
-        'dosage_model': {},      # 处理剂量模型
-        'time_model': {},        # 处理时间模型  
-        'protein_expression': {} # 蛋白表达量-时间模型
+        'dosage_model': {},      
+        'time_model': {},       
+        'protein_expression': {} 
     }
     
-    # 解析处理剂量模型 (行0-4)
     dosage_row_start = 0
     if '处理剂量模型' in str(df.iloc[dosage_row_start, 0]):
-        # 提取数值数据
         original_pb = []
         added_pb = []
         treated_pb = []
@@ -27,13 +20,13 @@ def parse_pollution_data(file_path: str) -> Dict:
         
         for col in range(1, 8):  # 列1-7
             try:
-                if pd.notna(df.iloc[1, col]) and df.iloc[1, col] != 0:  # 原始pb浓度
+                if pd.notna(df.iloc[1, col]) and df.iloc[1, col] != 0:  
                     original_pb.append(float(df.iloc[1, col]))
-                if pd.notna(df.iloc[2, col]) and df.iloc[2, col] != 0:  # 添加pb的量
+                if pd.notna(df.iloc[2, col]) and df.iloc[2, col] != 0:  
                     added_pb.append(float(df.iloc[2, col]))
-                if pd.notna(df.iloc[3, col]) and df.iloc[3, col] != 0:  # 处理后的量
+                if pd.notna(df.iloc[3, col]) and df.iloc[3, col] != 0:  
                     treated_pb.append(float(df.iloc[3, col]))
-                if pd.notna(df.iloc[4, col]) and df.iloc[4, col] != 0:  # 差值
+                if pd.notna(df.iloc[4, col]) and df.iloc[4, col] != 0:  
                     difference.append(float(df.iloc[4, col]))
             except (ValueError, TypeError):
                 continue
