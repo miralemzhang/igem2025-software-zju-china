@@ -123,7 +123,7 @@ We welcome all related contributions through pull requests or issues.
 
 - **Mingtao Zhang**
   - Undergraduate student, Zhejiang University
-  - Majoring in **Pharmaceutical Sxcience *(Honor)*** , minoring in **AI** and **DS&BDT**
+  - Majoring in **Pharmaceutical Science *(Honor)*** , minoring in **AI** and **DS&BDT**
 
 ### Acknowledgments
 I would like to express my sincere gratitude to the following individuals and teams for their invaluable support and contributions:
@@ -143,5 +143,5 @@ I would like to express my sincere gratitude to the following individuals and te
 
 <br>
 
-<a href="#top">Back to top</a>
+<a href="#top">Back to Top</a>
 
