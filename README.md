@@ -3,225 +3,196 @@
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![React](https://img.shields.io/badge/React-19.0%2B-blue.svg)](https://reactjs.org/)
-[![Flask](https://img.shields.io/badge/Flask-2.3%2B-green.svg)](https://flask.palletsprojects.com/)
 
 **Developed by ZJU-China 2025 iGEM Team**
 
-iLUMA is a comprehensive bioinformatics software tool designed for synthetic biology research, marine pollution monitoring, and intelligent data analysis. This platform integrates advanced AI capabilities with specialized biological modeling tools to provide researchers with a unified solution for complex biological system analysis.
+iLUMA is a comprehensive bioinformatics software tool designed for synthetic biology research, marine pollution monitoring, and intelligent data analysis. The platform integrates advanced AI capabilities with specialized biological modeling tools to provide researchers with a unified solution for complex biological system analysis.
 
-##  Features
+## Features
 
-###  AI-Powered Assistant (Lumaris 4-Octo)
-- **Intelligent Chat Interface**: Built on Llama-3.1 8B-Instruct model
-- **Multi-language Support**: English, Chinese (Simplified & Traditional), Cantonese
-- **Real-time Responses**: Dynamic typing animation with context-aware replies
-- **Project-specific Knowledge**: Trained on ZJU-China 2025 iGEM project data
+**AI-Powered Assistant (Lumaris 4-Octo)**
+- Intelligent chat interface built on Llama-3.1 8B-Instruct model
+- Multi-language support for English, Chinese (Simplified & Traditional), and Cantonese
+- Real-time responses with dynamic typing animation
+- Project-specific knowledge trained on ZJU-China 2025 iGEM project data
 
-###  Protein Analysis Module
-- **Data Upload & Processing**: CSV file support for protein concentration data
-- **Statistical Analysis**: Correlation analysis, curve fitting, and regression models
-- **Interactive Visualizations**: Dynamic charts with customizable parameters
-- **pDawn System Support**: Specialized analysis for light-inducible protein systems
+**Protein Analysis Module**
+- CSV file support for protein concentration data processing
+- Statistical analysis including correlation analysis, curve fitting, and regression models
+- Interactive visualizations with customizable parameters
+- Specialized support for pDawn light-inducible protein systems
 
-###  Marine Pollution Control System
-- **Pollutant Monitoring**: Real-time analysis of marine contamination
-- **Diffusion Modeling**: Mathematical models for pollutant spread prediction
-- **Control Efficiency Analysis**: Performance metrics for remediation strategies
-- **Environmental Impact Assessment**: Comprehensive reporting tools
+**Marine Pollution Control System**
+- Real-time analysis of marine contamination
+- Mathematical models for pollutant spread prediction
+- Performance metrics for remediation strategies
+- Comprehensive environmental impact assessment tools
 
-###  DNA Strand Displacement Visualization
-- **Dynamic Simulation**: Real-time animation of strand displacement reactions
-- **Biological Accuracy**: Correct reaction mechanisms implementation
-- **Interactive Controls**: Adjustable parameters for different experimental conditions
-- **Educational Interface**: Step-by-step visualization for learning purposes
+**DNA Strand Displacement Visualization**
+- Real-time animation of strand displacement reactions
+- Biologically accurate reaction mechanisms implementation
+- Adjustable parameters for different experimental conditions
+- Educational interface with step-by-step visualization
 
-###  Sensor Layer Modeling
-- **Mathematical Modeling**: Advanced algorithms for biosensor behavior prediction
-- **Parameter Optimization**: Automated fitting for experimental data
-- **Visualization Tools**: 3D plots and interactive graphs
-- **Performance Metrics**: Sensitivity, specificity, and response time analysis
+**Sensor Layer Modeling**
+- Advanced algorithms for biosensor behavior prediction
+- Automated parameter fitting for experimental data
+- 3D plots and interactive graphs
+- Performance metrics including sensitivity, specificity, and response time analysis
 
-##  Quick Start
+## Quick Start
 
 ### Prerequisites
-
-- **Python 3.8+** with pip
-- **Node.js 16+** with npm
-- **Git** for version control
+- Python 3.8+ with pip
+- Node.js 16+ with npm
+- Git for version control
 
 ### Installation
 
-1. **Clone the repository**
-   `ash
+1. Clone the repository
+   ```bash
    git clone https://gitlab.igem.org/2025/software-tools/zju-china.git
    cd zju-china
-   `
+   ```
 
-2. **Backend Setup**
-   `ash
+2. Backend setup
+   ```bash
    cd backend
    pip install -r requirements.txt
-   `
+   ```
 
-3. **Frontend Setup**
-   `ash
+3. Frontend setup
+   ```bash
    cd ../frontend
    npm install
-   `
+   ```
 
 ### Running the Application
 
-1. **Start the Backend Services**
-   `ash
+1. Start backend services (Port 5030)
+   ```bash
    cd backend
-   
-   # Main application server (Port 5030)
    python app.py
-   
-   # AI Agent server (Port 5000)
-   python UserAgentBackend.py
-   
-   # Additional services (if needed)
-   python protein_analysis_api.py  # Port 5001
-   python pollution_control_api.py # Port 5002
-   `
+   ```
 
-2. **Start the Frontend**
-   `ash
+2. Start frontend (Port 3000)
+   ```bash
    cd frontend
    npm start
-   `
+   ```
 
-3. **Access the Application**
-   - Open your browser and navigate to http://localhost:3000
-   - The application will automatically connect to backend services
+3. Access the application at `http://localhost:3000`
 
-##  Architecture
+## Usage Examples
 
-### Backend Structure
-`
-backend/
- app.py                      # Main Flask application
- UserAgentBackend.py         # AI agent service
- protein_analysis_api.py     # Protein analysis module
- pollution_control_api.py    # Pollution control system
- sensor_layer_api.py         # Sensor modeling API
- diffusion_visualization.py  # Strand displacement visualization
- requirements.txt            # Python dependencies
- images/                     # Static image assets
-`
-
-### Frontend Structure
-`
-frontend/
- src/
-    App.js                  # Main React application
-    components/             # Reusable React components
-    utils/                  # Utility functions
-    data/                   # Static data files
- public/                     # Public assets
- package.json               # Node.js dependencies
-`
-
-##  Usage Examples
-
-### 1. Protein Analysis
-Upload your protein concentration data in CSV format:
-`csv
+### Protein Analysis
+Upload CSV files with protein concentration data:
+```csv
 Time(h), Control, Treatment1, Treatment2
 0, 100, 100, 100
 1, 95, 120, 110
 2, 90, 140, 125
-`
+```
 
-### 2. AI Assistant Interaction
+### AI Assistant Interaction
 Example chat interactions:
-`
+```
 "What is the pDawn system?"
 "How does strand displacement work?"
 "Analyze my protein data"
 "Generate a sensor visualization"
-`
+```
 
-### 3. Pollution Control Modeling
+### Pollution Control Modeling
 Configure parameters for environmental analysis:
-`python
+```python
 pollution_params = {
     'source_concentration': 1000,  # mg/L
-    'diffusion_rate': 0.1,        # m/s
+    'diffusion_rate': 0.1,        # m²/s
     'degradation_rate': 0.05,     # 1/h
     'flow_velocity': 0.2          # m/s
 }
-`
+```
 
-##  Configuration
-
-### Environment Variables
-Create a .env file in the backend directory:
-`env
-FLASK_ENV=development
-FLASK_DEBUG=True
-PORT=5030
-`
+## Configuration
 
 ### AI Model Setup
 The AI assistant uses a fine-tuned Llama-3.1 8B model. Due to file size limitations, model files are not included in this repository.
 
-**To enable AI features:**
+To enable AI features:
 1. Contact ZJU-China 2025 team for model files
-2. Place model files in: ackend/Llama-3-8B-custom-RAG-zh/
-3. Required files:
-   - dapter_config.json
-   - dapter_model.safetensors
-   - 	okenizer_config.json
-   - 	okenizer.json
+2. Place model files in: `backend/Llama-3-8B-custom-RAG-zh/`
+3. Required files: `adapter_config.json`, `adapter_model.safetensors`, `tokenizer_config.json`, `tokenizer.json`
 
-**Note:** The system will use fallback responses if model files are unavailable.
+Note: The system will use fallback responses if model files are unavailable.
 
-##  Testing
+## Architecture
+
+```
+backend/
+├── app.py                      # Main Flask application
+├── UserAgentBackend.py         # AI agent service
+├── protein_analysis_api.py     # Protein analysis module
+├── pollution_control_api.py    # Pollution control system
+├── sensor_layer_api.py         # Sensor modeling API
+├── diffusion_visualization.py  # Strand displacement visualization
+├── requirements.txt            # Python dependencies
+└── images/                     # Static image assets
+
+frontend/
+├── src/
+│   ├── App.js                  # Main React application
+│   ├── components/             # Reusable React components
+│   ├── utils/                  # Utility functions
+│   └── data/                   # Static data files
+├── public/                     # Public assets
+└── package.json               # Node.js dependencies
+```
+
+## Testing
 
 ### Backend Tests
-`ash
+```bash
 cd backend
 python -m pytest tests/
-`
+```
 
 ### Frontend Tests
-`ash
+```bash
 cd frontend
 npm test
-`
+```
 
-##  Performance
+## Performance Specifications
 
-- **Response Time**: < 2 seconds for most API calls
-- **Concurrent Users**: Supports up to 100 simultaneous connections
-- **Data Processing**: Handles datasets up to 10MB
-- **AI Response**: Average 1-3 seconds for chat responses
+- Response Time: Less than 2 seconds for most API calls
+- Concurrent Users: Supports up to 100 simultaneous connections
+- Data Processing: Handles datasets up to 10MB
+- AI Response: Average 1-3 seconds for chat responses
 
-##  Contributing
+## Contributing
 
-We welcome contributions from the synthetic biology and bioinformatics community!
+We welcome contributions from the synthetic biology and bioinformatics community.
 
 ### Development Setup
 1. Fork the repository
-2. Create a feature branch: git checkout -b feature/amazing-feature
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Make your changes and add tests
-4. Commit your changes: git commit -m 'Add amazing feature'
-5. Push to the branch: git push origin feature/amazing-feature
+4. Commit your changes: `git commit -m 'Add amazing feature'`
+5. Push to the branch: `git push origin feature/amazing-feature`
 6. Open a Pull Request
 
 ### Code Style
-- **Python**: Follow PEP 8 guidelines
-- **JavaScript**: Use ESLint configuration provided
-- **Documentation**: Update README for new features
+- Python: Follow PEP 8 guidelines
+- JavaScript: Use ESLint configuration provided
+- Documentation: Update README for new features
 
-##  Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
-1. **Port conflicts**: Make sure ports 3000, 5000, and 5030 are available
-2. **Python dependencies**: Use pip install --upgrade pip before installing requirements
+1. **Port conflicts**: Ensure ports 3000, 5000, and 5030 are available
+2. **Python dependencies**: Use `pip install --upgrade pip` before installing requirements
 3. **Node.js version**: Ensure you're using Node.js 16 or higher
 4. **CORS issues**: Check that Flask-CORS is properly configured
 
@@ -231,51 +202,50 @@ We welcome contributions from the synthetic biology and bioinformatics community
 - Contact the development team (see contact information below)
 - Refer to the [ZJU-China 2025 Wiki](https://2025.igem.wiki/zju-china/software)
 
-##  License
+## License
 
 This project is licensed under the Creative Commons Attribution 4.0 International License - see the [LICENSE](LICENSE) file for details.
 
-##  Authors and Acknowledgments
+## Authors and Acknowledgments
 
 **ZJU-China 2025 iGEM Team - Dry Lab**
 
-- **Lead Developer**: @MiralemZhang
-- **AI Model Training**: ZJU-China 2025 Team
-- **Biological Modeling**: ZJU-China 2025 Dry Lab
-- **Frontend Development**: ZJU-China 2025 Team
+- Lead Developer: @MiralemZhang
+- AI Model Training: ZJU-China 2025 Team
+- Biological Modeling: ZJU-China 2025 Dry Lab
+- Frontend Development: ZJU-China 2025 Team
 
 ### Special Thanks
-- **Zhejiang University iGEM Program** for support and resources
-- **iGEM Foundation** for the competition platform
-- **HuggingFace** for the open-source Llama model
-- **React and Flask communities** for excellent documentation
+- Zhejiang University iGEM Program for support and resources
+- iGEM Foundation for the competition platform
+- HuggingFace for the open-source Llama model
+- React and Flask communities for excellent documentation
 
-##  Contact
+## Contact
 
-- **Email**: ZJU_China@outlook.com
-- **Developer**: miralemzhang@gmail.com
-- **Project Wiki**: https://2025.igem.wiki/zju-china/software
-- **WeChat**: Scan QR code in the application
+- Email: ZJU_China@outlook.com
+- Developer: miralemzhang@gmail.com
+- Project Wiki: https://2025.igem.wiki/zju-china/software
 
-##  Related Links
+## Related Links
 
 - [ZJU-China 2025 iGEM Wiki](https://2025.igem.wiki/zju-china/)
 - [iGEM Competition](https://competition.igem.org/)
 - [Synthetic Biology Community](https://synbiocommunity.org/)
 
-##  Version History
+## Version History
 
 - **v1.3.2** (Current) - Enhanced AI responses, improved UI/UX
 - **v1.2.0** - Added pollution control module
 - **v1.1.0** - Integrated protein analysis features
 - **v1.0.0** - Initial release with basic functionality
 
-##  Awards and Recognition
+## Awards and Recognition
 
 This software tool is submitted for the **iGEM 2025 Best Software Tool** award, representing innovative solutions in synthetic biology and environmental monitoring.
 
 ---
 
-**Built with  by ZJU-China 2025 for the global synthetic biology community**
+**Built by ZJU-China 2025 for the global synthetic biology community**
 
 *This software tool is part of our iGEM 2025 project focusing on marine pollution control through synthetic biology approaches.*
