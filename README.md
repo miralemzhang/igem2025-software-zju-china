@@ -133,10 +133,10 @@ I would like to express my sincere gratitude to the following individuals and te
 
 ## Contact
 
-- Team Email: ZJU_China@outlook.com
 - Developer: 
    - Email: miralemzhang@gmail.com
    - Blog: https://miralemzhang.github.io/
+- Team Email: ZJU_China@outlook.com
 - Project Wiki: https://2025.igem.wiki/zju-china/software
 
 
