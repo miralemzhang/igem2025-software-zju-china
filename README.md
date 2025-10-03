@@ -8,7 +8,7 @@
 
 iLUMA is a comprehensive bioinformatics software tool designed for synthetic biology research, marine pollution monitoring, and intelligent data analysis. The platform integrates advanced AI capabilities with specialized biological modeling tools to provide researchers with a unified solution for complex biological system analysis.
 
-## Features
+## Features in Current Version (1.3.2)
 
 - User Console — an intuitive front end for operational use, composed primarily of two modules:
   - Monitor: a monitoring dashboard for real-time visualization of sensor data, pollutant dispersion maps, and alerting.
@@ -109,24 +109,23 @@ cd frontend
 npm test
 ```
 
+## License
+
+This project is licensed under the Creative Commons Attribution 4.0 International License - see the [LICENSE](LICENSE) file for details.
+
 
 ## Contributing
 
 We welcome all related contributions through pull requests or issues.
 
-
-
-## License
-
-This project is licensed under the Creative Commons Attribution 4.0 International License - see the [LICENSE](LICENSE) file for details.
-
-## Author
+## Contributors
+### Author
 
 - **Mingtao Zhang**
   - Undergraduate student, Zhejiang University
   - Majoring in **Pharmaceutical Sxcience *(Honor)*** , minoring in **AI** and **DS&BDT**
 
-## Acknowledgments
+### Acknowledgments
 I would like to express my sincere gratitude to the following individuals and teams for their invaluable support and contributions:
 - **Zhan Zhou**, Assistant Dean of the Innovation Institude of Artificial Intelligence in Medicine, Zhejiang University
 - **Junbo Zhao**, Director of the Artificial Intelligence Frontier Research Center, Institute of Computer Innovation Technology, Zhejiang University
@@ -142,13 +141,7 @@ I would like to express my sincere gratitude to the following individuals and te
 
 
 
-## Version History (Brief)
+<br>
 
-- **v1.3.2** (Current) - Enhanced AI responses, improved UI/UX
-- v1.2.0 - Added pollution control module
-- v1.1.0 - Integrated protein analysis features
-- v1.0.0 - Initial release with basic functionality
-
-
-**Built by ZJU-China 2025 for the global synthetic biology community**
+<a href="#top">Back to top</a>
 
