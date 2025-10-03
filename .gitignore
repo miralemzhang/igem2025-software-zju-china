@@ -1,0 +1,58 @@
+# Node / React
+frontend/node_modules/
+frontend/build/
+frontend/.cache/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/package-lock.json
+package-lock.json
+
+# Python
+backend/__pycache__/
+backend/*.pyc
+backend/.venv/
+backend/venv/
+backend/.env
+
+# Sessions / runtime data
+backend/sessions/
+sessions/
+
+# Large model weights or adapters
+backend/Llama-*/
+backend/**/*.safetensors
+backend/**/*.bin
+backend/**/*.pt
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Dist/test artifacts
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+
+# Large media files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.avi
+*.mov
+
+# Large HTML files with embedded resources
+3dv*.html
+**/3dv*.html
+
+# Additional large files
+*.safetensors
+tokenizer.json
