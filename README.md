@@ -64,10 +64,10 @@ iLUMA is a comprehensive bioinformatics software tool designed for synthetic bio
 ## Configuration
 
 ### AI Models Setup
-The AI-based models of iLUMA are placed in `/models`
+The AI-based models of iLUMA are placed in `models/`
 To enable AI features:
-1. Open `/models`
-2. Download and place the model files correctly following `readme.md` in `/models`
+1. Open `models/`
+2. Download and place the model files correctly following `README.md` in `models/`
 3. Please aware that model files are large and should not be committed to Git.
 
 
@@ -97,6 +97,7 @@ models/
 ├── LUplaSEE/
 │   └── best.pt                     # YOLOv8 trained weights (PyTorch .pt)
 └── Lumaris_4-Octo/
+    ├── googlecolab_deploy.ipynb   # Notebook with a sample of testing dataset
     ├── lora/
     │   └── <LoRA adapter files>     # LoRA training outputs (adapter files, model.safetensors, optimizer.pt, adapter_config.json, ...)
     └── rag/
