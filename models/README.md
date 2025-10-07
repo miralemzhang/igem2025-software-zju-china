@@ -22,6 +22,7 @@ models/
 ├── LUplaSEE/
 │ └── best.pt
 └── Lumaris_4-Octo/
+├── googlecolab_deploy.ipynb (with testing dataset)
 ├── lora/
 │ ├── adapter_config.json
 │ ├── adapter_model.safetensors
