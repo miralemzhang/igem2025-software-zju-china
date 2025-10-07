@@ -98,15 +98,15 @@ rsync -av --exclude='models/' ./build_output/ user@server:/var/www/iLUMA/
 ```
 
 ## Obtaining Models
-Please contact ZJU-China iGEM 2025 for access to:
+You will have the access to:
 
-YOLOv8 trained model weights (LUplaSEE/best.pt)
+- YOLOv8 trained model weights (LUplaSEE/best.pt)
 
-LoRA adapter files
+- LoRA adapter files
 
-RAG retrieval index files
+- RAG retrieval index files
 
-You may reach the team through the official iGEM collaboration platform or internal communication channels.
+You may reach the team through the official iGEM collaboration platform or email for further using guide.
 
 ## Summary
 ### Component Path Purpose
