@@ -1,4 +1,5 @@
-LoRA files of Lumaris 4-Octo
+# LoRA files of Lumaris 4-Octo
+by Dry Lab, ZJU-China 2025
 
 ---
 base_model: meta-llama/Meta-Llama-3.1-8B-Instruct
