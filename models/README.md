@@ -17,7 +17,7 @@ Please contact the **ZJU-China iGEM 2025 Software Team** to request access to th
 ---
 
 ## Directory Structure
-
+```
 models/
 ├── LUplaSEE/
 │   └── best.pt
@@ -30,7 +30,7 @@ models/
     └── rag/
         ├── index.faiss
         └── index.pkl
-
+```
 
 
 ### 1. LUplaSEE/
