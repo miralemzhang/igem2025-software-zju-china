@@ -20,16 +20,17 @@ Please contact the **ZJU-China iGEM 2025 Software Team** to request access to th
 
 models/
 ├── LUplaSEE/
-│ └── best.pt
+│   └── best.pt
 └── Lumaris_4-Octo/
-├── googlecolab_deploy.ipynb (with testing dataset)
-├── lora/
-│ ├── adapter_config.json
-│ ├── adapter_model.safetensors
-│ └── other_lora_files...
-└── rag/
-├── index.faiss
-└── index.pkl
+    ├── googlecolab_deploy.ipynb   # Notebook with a sample of testing dataset
+    ├── lora/
+    │   ├── adapter_config.json
+    │   ├── adapter_model.safetensors
+    │   └── other_lora_files...
+    └── rag/
+        ├── index.faiss
+        └── index.pkl
+
 
 
 ### 1. LUplaSEE/
