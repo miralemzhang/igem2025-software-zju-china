@@ -19,7 +19,7 @@ build-job:
   before_script:
     # Install frontend dependencies
     - cd $FRONTEND_DIR
-    - npm ci
+    - npm install
   script:
     # Build frontend
     - npm run build
