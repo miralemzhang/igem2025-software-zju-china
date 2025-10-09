@@ -536,7 +536,10 @@ def protein_chat():
         message = data.get('message', '')
         context = data.get('context', {})
         message_lower = message.lower()
-        #...
+        message_lower = message.lower()
+        return jsonify({'reply': f'You said: {message}'})
+    except Exception as e:
+        return jsonify({'error': f'error: {str(e)}'}), 500
         
         
 @app.route('/api/protein-correlation', methods=['GET'])
