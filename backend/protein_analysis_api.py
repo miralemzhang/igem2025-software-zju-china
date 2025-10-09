@@ -492,7 +492,6 @@ def upload_protein_data():
 def get_protein_data():
     try:
         if analyzer.data is None:
-        if analyzer.data is None:
             sample_data = """Induction time/h,0.0 ,0.5 ,1.0 ,1.5 ,2.0 ,3.0 ,4.0 ,5.0 ,6.0 ,20.0 
 Mean intensity (a.u.),0.20 ,7.95 ,10.38 ,11.49 ,12.49 ,13.97 ,15.76 ,17.48 ,17.68 ,18.02 """
             
@@ -508,7 +507,6 @@ Mean intensity (a.u.),0.20 ,7.95 ,10.38 ,11.49 ,12.49 ,13.97 ,15.76 ,17.48 ,17.6
 @app.route('/api/protein-analysis-chart', methods=['GET'])
 def get_analysis_chart():
     try:
-        if analyzer.data is None:
         if analyzer.data is None:
             sample_data = """OD600值,A-a-1,A-a-2,A-a-3,B-a-1,B-a-2,B-a-3
 2025/8/10 22:00,0.018,0.015,0.014,0.015,0.016,0.016
