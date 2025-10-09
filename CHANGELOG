@@ -1,0 +1,33 @@
+iLUMA Version	Web Platform	Lumaris	LUplaSEE
+v1.0.0	- Initial framework established (React, Flask).
+- Basic UI for Homepage, Developer & User Consoles.
+- Initial DNA Strand Displacement Reaction (SDR) module with ODE solver.	-	-
+v1.1.0	- Major pivot of the SDR module from kinetic simulation to ML-based prediction from fluorescence data.
+- Introduced dynamic water ripple visualization.	-	-
+v1.2.0	- Integrated interactive 3D ocean current model.
+- Revised software architecture into "User-Developer-Chat Agent" structure.
+- Renamed UI sections from "Modes" to "Consoles".	v1.0:
+- First deployment.
+- Based on Llama-3 8B, fine-tuned with LoRA and RAG.
+- Capable of answering fact-based questions from project documentation.	-
+v1.2.1	- Major UI overhauls to a fully English interface.
+- Integrated heavy metal pollutant diffusion model into the User Console.	v2.0:
+- Upgraded to support English, Chinese, and Cantonese.
+- UI improved with a dedicated, pop-out chat window.	-
+v1.2.2	- Finalized UI with a unified theme using the coordinated color scheme of the entire project and a top navigation bar.	v3.2-Octo:
+- Deployed with a Sparse Mixture-of-Experts (MoE) architecture.
+- Significantly improved English comprehension and response efficiency.	-
+v1.2.3	- Platform added new modules prepared for the integration of the new CV-based oceanic plastic pollutant detection model LUplaSEE.	-	v1.0:
+- Initial build and training of the YOLOv8 model on the PlasticInWater dataset.
+- Model validated with high accuracy for identifying underwater plastics.
+v1.3.0	- Completed the molecular diffusion and concentration field modeling for the SDR sensing layer.	-	v2.0:
+- Deployed within the iLUMA User Console.
+- UI includes real-time video stream and detection statistics.
+- Improved frame capture logic for more robust performance.
+v1.3.1	- Added Algae-Bacteria Symbiosis modeling and visualization (GSM & ODEs) to the Developer Console.	v4-Octo:
+- Deployed with a novel Soft-Supervised Mixture of Micro-Experts (SS-MoME) architecture.
+- Achieved multimodality: can generate data visualizations from text commands.	-
+v1.3.2	- Completed final functional modules: Protein Production and Pollution Control Efficiency analysis.
+- Final UI/UX adjustments with the art team.
+- Final CRUD testing for deployment
+- All APIs and modules finalized for submission.	(Stable)	(Stable)
