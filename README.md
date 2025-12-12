@@ -9,7 +9,7 @@
 iLUMA is a comprehensive bioinformatics software tool designed for synthetic biology research, marine pollution monitoring, and intelligent data analysis. The platform integrates advanced AI capabilities with specialized biological modeling tools to provide researchers with a unified solution for complex biological system analysis.
 
 ## Features in Current Version (1.3.2)
-![framework](https://static.igem.wiki/teams/5869/software/figure1.webp)
+![framework](https://github.com/miralemzhang/zju-china/blob/main/frontend/public/figure111.png)
 - User Console — an intuitive front end for operational use, composed primarily of two modules:
   - Monitor: a monitoring dashboard for real-time visualization of sensor data, pollutant dispersion maps, and alerting.
   - Terminal: a control panel for user commands, report generation, and interaction with Lumaris.
@@ -157,4 +157,5 @@ I would like to express my sincere gratitude to the following individuals and te
 <br>
 
 <a href="#top">Back to Top</a>
+
 
